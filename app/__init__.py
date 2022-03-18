@@ -31,6 +31,8 @@ app.config['ALLOWED_EXTENSIONS'] = ['txt', 'pdf', 'png', 'jpg', 'jpeg', '.doc', 
 # Custom filters
 app.jinja_env.filters["PLN"] = PLN
 app.jinja_env.filters["absolute"] = absolute
+app.jinja_env.trim_blocks = True
+app.jinja_env.lstrip_blocks = True
 
 # Configure database
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///store.db'

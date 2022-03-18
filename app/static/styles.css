@@ -50,14 +50,16 @@ button:visited {
 }
 .container {
     font-size: 15px;
+    margin: 0%;
+    max-width: 930px;
     margin: 0 auto;
-    max-width: 930px; 
+   
     width: 100%;   
 }
 #odd-container {
     background-color: #f3f3f3;
+  
     width: 100%;
-
 }
 img {
     height: 210px;

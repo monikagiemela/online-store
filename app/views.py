@@ -125,23 +125,26 @@ def login():
     if request.method == "POST":
 
         # Ensure email_address was submitted
-        if not request.form.get("email-address"):
+        try:
+            email_address = request.form.get("email-address")
+        except AttributeError:
             return apology("Podaj address email, który podałeś przy rejestracji", 400)
-
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("Podaj hasło", 400)
         
-        email_address = request.form.get("email_address")
-        password = request.form.get("password")
+        # Ensure password was submitted
+        try:
+            password = request.form.get("password")
+        except AttributeError:
+            return apology("Podaj hasło", 400)
        
         # Query database for email_address and check password  
-        if not Users.query.filter_by(email_address=email_address).first():
+        try:
+            user = Users.query.filter_by(email_address=email_address).first()
+        except AttributeError:
             return apology("Nieprawidłowy adres email lub hasło", 400)
-        
-        user = Users.query.filter_by(email_address=email_address).first()
-        
-        if not check_password_hash(user.hash, password):
+            
+        try:
+            check_password_hash(user.hash, password)
+        except:
             return apology("Nieprawidłowy adres email lub hasło", 400)
         
         # Remember which user has logged in
@@ -151,7 +154,7 @@ def login():
         # Redirect user to home page
         return redirect("/")
 
-    # User reached route via GET (as by clicking a link or via redirect)
+    # User reached route via GET
     else:
         return render_template("login.html")
 
@@ -160,12 +163,12 @@ def login():
 def order():
     """Show order details"""
     if request.method == "GET":
+        # User is already logged in
         if session.get("user_id"):
             id = session.get("user_id")
 
-            user = Users.query.filter_by(id=id).first()
-
             # Fetch user data from db
+            user = Users.query.filter_by(id=id).first()
             user_name = user.first_name
             user_lastname = user.last_name
             user_email = user.email_address  
@@ -184,7 +187,8 @@ def order():
             session_ = "in_session"
 
             return render_template("order.html", user_name=user_name, user_lastname=user_lastname, user_email=user_email, user_phone=user_phone, postage_address=postage_address, user_postcode=user_postcode, user_city=user_city, user_country=user_country, company_name=company_name, nip=nip, session_=session_)
-
+        
+        # User if not logged in
         else:
             return render_template("order.html")
     
@@ -243,10 +247,10 @@ def order():
             user_country = request.form.get("user-country")
             user_phone = request.form.get("user-phone") 
             
-            if request.form.get("user-apertment-number"):
+            try:
                 user_apartment_number = request.form.get("user-apertment-number")
                 postage_address = f"{user_street} {user_house_number}/{user_apartment_number}"
-            else:
+            except:
                 postage_address = f"{user_street} {user_house_number}"
             
             if request.form.get("company-name") and request.form.get("nip"):
@@ -255,7 +259,7 @@ def order():
                 invoice = "yes"
 
             # If user chose to register, add user details to Users table in db
-            if hash: 
+            if user_password: 
                 if not request.form.get("company-name"):
                     user = Users(first_name=user_name, last_name=user_lastname, email_address=user_email, hash=hash, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country)
                 

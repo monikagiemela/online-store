@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Konto użytkownika
+{% endblock %}
+
+{% block main %}
+<div class="container">    
+    <br>
+        <a class="btn btn-outline-dark position-absolute topright" href="/password" role="button">Zmień hasło</a>
+    <br>
+</div>
+
+<section class="boxes">
+    <div class="container">
+        <h4 class="fw-light">Twoje zamówienia</h4>
+        <br>
+    </div>
+</section>   
+    
+{% if (user_transactions | length) > 0 %}
+<section class="boxes"> 
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-dark">
+                    <th class="text-start">#</th>
+                    <th class="text-start">Data</th>
+                    <th class="text-start">Kwota zamówienia</th>               
+                </thead>
+                {% set counter = [1] %}
+                {% for row in user_transactions %}
+                <tr>
+                    <td class="text-start">{{ counter | length }}</td>
+                    {% set var = counter.append(1) %}
+                    <td class="text-start">{{ row["datel"] }}</td>
+                    <td class="text-start">{{ row["total"] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="boxes">
+    <div class="container">
+        <h6 class="fw-light">Twoja historia zamówień jest pusta</h6>
+        <br>
+    </div>
+</section> 
+{% endif %}       
+
+{% endblock %}

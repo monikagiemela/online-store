@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
+
+        <!-- http://getbootstrap.com/docs/5.1/ -->
+        <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" 
+            rel="stylesheet">
+        <link 
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" 
+            rel="stylesheet">
+        <!-- https://pics.freeicons.io/uploads/icons/png/16381698851578289042-64.png -->
+        <link href="/static/stampicon.png" rel="icon">
+        <link href="/static/styles.css" rel="stylesheet">
+        <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <title>MG Print | {% block title %}{% endblock %}</title>
+    </head>
+
+    <body class="d-flex flex-column min-vh-100">
+        <header>
+        <nav class="navbar navbar-expand-sm navbar-dark">
+            <div class="container-fluid d-flex align-items-end">
+                <div>
+                    <a class="navbar-brand flex-shrink-0" href="/">
+                        <img alt="logo" src="static/logo.png">
+                    </a>
+                </div>
+                <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar">      
+                    <ul class="navbar-nav me-auto mt-2">
+                        <li class="nav-item dropdown ms-5">
+                            <a class="nav-link active dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="/pieczątki" role="button">Produkty</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/trodat">Pieczątki Trodat</a></li>
+                                <li><a class="dropdown-item" href="/wagraf">Pieczątki Wagraf</a></li>
+                                <li><a class="dropdown-item" href="/colop">Pieczątki Colop</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/pieczątki">Wszystkie pieczątki</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-nav ms-auto mt-2">
+                        <input class="form-control me-2" type="search" placeholder="Szukaj" aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit">Szukaj</button>
+                    </form>
+                    {% if session["user_id"] %}
+                    <ul class="navbar-nav ms-auto mt-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/user">
+                                <span><ion-icon name="person-outline"></ion-icon></span>
+                            </a>
+                        </li>
+                        <li class="nav-item"></li>
+                            <a class="nav-link active" data-bs-toggle="modal" data-bs-target="#cart_modal" id="cart">
+                                <span><ion-icon name="cart-outline"></ion-icon></span>
+                            </a>            
+                        </li> 
+                        <li class="nav-link active"><a href="/logout">Wyloguj</a></li>         
+                    </ul>
+                    {% else %}
+                    <ul class="navbar-nav ms-auto mt-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/user">
+                                <span><ion-icon name="person-outline"></ion-icon></span>
+                            </a>
+                        </li>
+                        <li class="nav-item"></li>
+                            <a class="nav-link active" data-bs-toggle="modal" data-bs-target="#cart_modal" id="cart">
+                                <span><ion-icon name="cart-outline"></ion-icon></span>
+                            </a>            
+                        </li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <!--- CART MODAL STARTS HERE -->
+        <div class="modal fade" id="cart_modal" tabindex="-1" aria-labelledby="cart_modal_lable" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="cart-modal-title" id="modal-title">Twój koszyk</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4 ms-auto"><strong>Produkt</strong></div>
+                                <div class="col-md-2 ms-auto"><strong>Kolor obudowy</strong></div>
+                                <div class="col-md-2 ms-auto"><strong>Kolor tuszu</strong></div>
+                                <div class="col-md-2 ms-auto"><strong>Cena produktu</strong></div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="container-fluid" id="cart-products"></div>
+                        <hr>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4"><strong>Razem produkty</strong></div>
+                                <div class="col-md-2 ms-auto" id="cart-total"></div>      
+                            </div>
+                        </div>   
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <a class="box-btn" data-bs-dismiss="modal" type="button">Kontynuuję zakupy</a>
+                        <a class="box-btn" href="/order" role="button" type="button">Przechodzę do realizacji zamówienia</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--- CART MODAL ENDS HERE  -->
+        </header>
+
+        {% if get_flashed_messages() %}
+            <header>
+                <div class="alert alert-primary mb-0 text-center fade show" role="alert"><button type="button" class="btn-close position-absolute top-0 end-0 me-3 mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {{ get_flashed_messages() | join(" ") }}
+                </div>
+            </header>
+        {% endif %}
+
+        <main class="container-fluid py-5">
+            {% block main %}{% endblock %}
+        </main>
+
+        <footer class="small">
+            <div class="container-fluid">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="/o_nas">O nas</a></li>
+                    <li class="list-group-item"><a href="#">Skontaktuj się z nami</a></li>
+                </ul>
+            </div>
+        </footer>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script src="/static/store.js"></script>
+    </body>
+</html>

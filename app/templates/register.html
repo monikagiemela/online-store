@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Rejestracja
+{% endblock %}
+
+{% block main %}
+<div id="odd-container">
+    <div class="container p-3">  
+        <form action="/register" method="post">  
+            <h4>1. Dane zamawiającego</h4>   
+            <div class="order-boxes">           
+                <div class="container-order-page">
+            
+                    <div class="box-order-page">
+                        <div class="form-check form-check-inline mb-3 mt-3">
+                            <input class="form-check-input" type="radio" name="user-title" id="ms" value="Pani">
+                            <label class="form-check-label" for="Pani/Pan">Pani</label>
+                        </div>
+                        <div class="form-check form-check-inline mb-3 mt-3">
+                            <input class="form-check-input" type="radio" name="user-title" id="mr" value="Pan">
+                            <label class="form-check-label" for="Pani/Pan">Pan</label>
+                        </div>
+                    </div>
+
+                    <div class="box-order-page"></div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3">
+                            <label for="user-name" class="form-label">Imię<span class="compulsory-field">*</span></label>
+                            <input type="text" class="form-control" id="user-name" name="user-name" required>    
+                        </div>
+                    </div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3">
+                            <label for="user-lastname" class="form-label">Nazwisko<span class="compulsory-field">*</span></label>
+                            <input type="text" class="form-control" id="user-lastname" name="user-lastname" required>    
+                        </div>
+                    </div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3">
+                            <label for="email-address" class="form-label">Adres email<span class="compulsory-field">*</span></label>
+                            <input type="email" class="form-control" id="user-email-address" name="user-email-address" required>
+                        </div>
+                    </div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3">
+                            <label for="user-phone" class="form-label">Nr telefonu komórkowego<span class="compulsory-field">*</span></label>
+                            <input type="tel" class="form-control" id="user-phone" minlength="9" maxlength="9" name="user-phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="box-order-page">
+                        <label for="user-password" class="form-label">Hasło<span class="compulsory-field">*</span></label>
+                        <input type="password" class="form-control" id="user-password" name="user-password">
+                    </div>
+                    
+                    <div class="box-order-page">
+                        <label for="password-confirmation" class="form-label">Powtórz hasło<span class="compulsory-field">*</span></label>
+                        <input type="password" class="form-control" id="user-password-confirmation" name="user-password-confirmation">
+                    </div>
+                </div>
+            </div> 
+        
+            <br><br>
+            <h4>2. Adres</h4>
+            <div class="order-boxes">
+                <div class="container-order-page">
+
+                    <div class="box-order-page">
+                        <div class="mb-3 mt-3">
+                            <label for="company-name" class="form-label">Nazwa firmy</label>
+                            <input type="text" class="form-control" id="company-name" name="company-name">    
+                        </div>
+                    </div>
+            
+                    <div class="box-order-page">
+                        <div class="mb-3 mt-3">
+                            <label for="nip" class="form-label">NIP</label>
+                            <input type="text" class="form-control" id="nip" name="nip">    
+                        </div>
+                    </div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3 mt-3">
+                            <label for="user-street" class="form-label">Ulica<span class="compulsory-field">*</span></label>
+                            <input type="text" class="form-control" id="user-street" name="user-street" required>    
+                        </div>
+                    </div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3 mt-3 row">
+                            <div class="col-sm-6">
+                                <label for="user-house-number" class="form-label">Nr domu<span class="compulsory-field">*</span></label>
+                                <input type="text" class="form-control" id="user-house-number" name="user-house-number" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="user-house-number" class="form-label">Nr lokalu</label>
+                                <input type="text" class="form-control" id="user-apertment-number" name="user-apertment-number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3">  
+                            <label for="user-city" class="form-label">Miasto<span class="compulsory-field">*</span></label>
+                            <input type="text" class="form-control" id="user-city" name="user-city">
+                        </div>
+                    </div>
+                    
+                    <div class="box-order-page">
+                        <div class="mb-3">
+                            <label for="user-postcode" class="form-label">Kod pocztowy<span class="compulsory-field">*</span></label>
+                            <input type="text" class="form-control" id="user-postcode" name="user-postcode" required>
+                        </div>       
+                    </div>
+
+                    <div class="box-order-page">
+                        <div class="mb-3">
+                            <label for="user-country" class="form-label">Kraj<span class="compulsory-field">*</span></label>
+                            <select class="form-select" name="user-country" required>
+                                <option value disabled selected>-- proszę wybrać --</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Belgia">Belgia</option>
+                                <option value="Chorwacja">Chorwacja</option>
+                                <option value="Czechy">Czechy</option>
+                                <option value="Dania">Dania</option>
+                                <option value="Finlandia">Finlandia</option>
+                                <option value="Francja">Francja</option>
+                                <option value="Grecja">Grecja</option>
+                                <option value="Hiszpania">Hiszpania</option>
+                                <option value="Holandia">Holandia</option>
+                                <option value="Irlandia">Irlandia</option>
+                                <option value="Niemcy">Niemcy</option>
+                                <option value="Norwegia">Norwegia</option>
+                                <option value="Polska" selected>Polska</option>
+                                <option value="Portugalia">Portugalia</option>
+                                <option value="Szwajcaria">Szwajcaria</option>
+                                <option value="Szwacja">Szwecja</option>
+                                <option value="Wielka Brytania">Wielka Brytania</option>
+                                <option value="Włochy">Włochy</option>
+                            </select>
+                        </div>
+                    </div> 
+                </div>                   
+            </div>
+            <br><br>
+            
+            <h4>3. Akceptacja regulaminu</h4> 
+            <div class="order-boxes">     
+                <div class="container-order-page">
+                    <div class="m-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="terms-and-conditios-accepted" id="terms-and-conditios-accepted">
+                            <label class="form-check-label" for="terms-and-conditios-accepted">
+                                <span class="compulsory-field">* </span>
+                                Potwierdzam, że zapoznałam(em) się z treścią Regulaminu i Polityką Prywatności oraz akceptuję ich postanowienia.
+                                <span class="compulsory-field"> (Wymagane)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+            <button class="btn box-btn btn-large m-3" type="submit">Zapisz</button>
+        
+        </form>
+    </div>
+</div>
+{% endblock %}

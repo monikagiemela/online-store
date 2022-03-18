@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Popularne Pieczątki
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="section">
+            <h2 class="shop-item-title">Pieczątka COLOP COMPACT 20</h2>
+            <hr>
+            <div class="grid-container">
+                <img alt="colop20" src="photos/colop_printer_20.jpg">
+                <div class="grid-item">
+                    <div class="gird-item-price">18,00 zł</div>
+                    <button value=0 class="add-to-cart" id="id">Dodaj do koszyka</button>
+                    <input type="hidden" value="18" />
+                </div>
+                <ul class="grid-item">
+                    <li>Format pieczątki: 38 x 14 mm</li>
+                    <li>Liczba wierszy: 4</li>
+                    <li>Kolor poduszki:  czarny, czerwony, niebieski</li>
+                    <br>
+                    <li>Po wybraniu produktu, wybierz kolor tuszu i obudowy, zaznacz pole wyboru gumka z treścią tak lub nie, napisz treść pieczątki, dodaj produkt do koszyka. Następnie przejdź do koszyka, w prawym, górnym rogu strony, dokonaj wyboru formy dostawy: paczkomat, kurier lub odbiór osobisty oraz sposobu płatności. Masz do wyboru szybkie płatności, tradycyjny przelew lub odroczoną płatność.</li>
+                    <li>Treść pieczątki należy wpisywać w odpowiednich rubrykach, każdą linijkę tekstu oddzielnie.</li>
+                    <li>Można również wykorzystać pole "informacje dodatkowe" aby wpisać całą treść lub tylko uwagi do zamówienia.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

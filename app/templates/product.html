@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ product_name }}
+{% endblock %}
+
+{% block main %}
+    <div class="container">     
+        <h2>Pieczątka {{ product_name }}</h2>
+        <hr>
+        <section class="boxes">
+            <div class="container-product-page">
+                
+                <div class="box-product-page">
+                    <img alt="Pieczątka {{ product_name }}" src="static/{{ product_symbol }}.jpg">
+                </div>
+
+                <div class="box-product-page">
+                    <input id="product_price" type="hidden" value="{{ product_price }}">
+                    <div class="box-content">Cena: {{ product_price | PLN }}</div>
+                    <div>Cena netto: {{ (product_price / 1.23) | PLN }}</div>
+                    <button value=0 class="box-btn" id="id">Dodaj do koszyka sam automat</button>
+                    <input type="hidden" value="18"/>
+                    <p>Lub przejdź do spersonalizowania treści pieczątki poniżej</p>   
+                    <br>
+                    <ul class="no-bullets">
+                        <li>Wymiar odbicia:  <strong>{{ print_size }}</strong></li>
+                        <li>Liczba wierszy: <strong>{{ max_lines }}</strong></li>
+                        <li>Kolor poduszki tuszującej:  <strong>czarny, niebieski, fioletowy, czerwony, zielony</strong></li>
+                        <br>
+                        <li>{{ product_description }}</li>
+                        <br>
+                    </ul>
+                <br>
+                </div>
+                
+                <div class="container text-center">
+                    <h4>Zaprojektuj swoją pieczątkę</h4>
+                </div>
+
+                <div class="box-product-page">       
+                    <ul class="no-bullets">
+                        <br>
+                        <li>Po wybraniu <strong>produktu</strong>, wybierz <strong>kolor tuszu</strong> i <strong>obudowy</strong>.
+                        <br>
+                        <br>
+                        <li>Napisz <strong>treść pieczątki</strong> i dodaj produkt do koszyka.
+                            Treść pieczątki należy wpisywać w odpowiednich rubrykach, każdą linijkę tekstu oddzielnie.</li>
+                        <br>
+                        <li>Można również wykorzystać pole <strong>"Dołącz plik z grafiką"</strong> aby przesłać projekt pieczątki lub grafikę (np. logo firmy).</li>
+                        <br>
+                        <li>Następnie <strong>przejdź do koszyka</strong>, w prawym, górnym rogu strony. Dokonaj 
+                            wyboru <strong>formy dostawy: paczkomat, kurier lub odbiór osobisty</strong> oraz <strong>formy płatności</strong>. 
+                            Masz do wyboru szybkie płatności, tradycyjny przelew lub odroczoną płatność.</li>  
+                    </ul>   
+                </div>
+
+                <div class="box-product-page">
+                    <br>
+                    <!--<form id="myForm" enctype=multipart/form-data>-->
+                        
+                        <input name="product_name" id="product_name" type="hidden" value="{{ product_name }}">
+                        
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label" for="order">Kolor tuszu:</label>
+                            <div class="col-sm-6">
+                                <select class="form-select fw-light mx-auto w-auto mb-3" id="content_color_name" name="content_color_name">
+                                    <option class="fw-light disabled">Wybierz</option>
+                                    {% for content_color in content_colors_list %}
+                                        <option class="fw-light" value="{{ content_color }}">{{ content_color }}</option>
+                                    {% endfor %}    
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label" for="order">Kolor obudowy:</label>
+                            <div class="col-sm-6">
+                                <select class="form-select fw-light mx-auto w-auto mb-3" id="case_color_name" name="case_color_name">
+                                    <option class="fw-light disabled">Wybierz</option>
+                                    {% for case_color_name in case_colors_list %}
+                                    <option class="fw-light" value="{{ case_color_name }}">{{ case_color_name }}</option>     
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 row">
+                            <label for="file" class="col-sm-3 col-form-label">Dołacz plik z grafiką:</label> 
+                            <div class="col-sm-6">
+                                <input accept="image/*, .txt, .doc, .docx, .txt, .pdf" class="fw-light mx-auto w-auto form-control mb-3"  name="order_file" type="file" multiple>
+                            </div>
+                        </div>
+                        
+                        {% for i in range(max_lines): %}
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label" for="content_line{{ i + 1 }}"> {{ i + 1 }} linia tekstu:</label>
+                            <div class="col-sm-6">
+                                <input class="content_line fw-light form-control mx-auto w-auto" data-linevalue="0" id="content_line{{ i + 1 }}" name="content_line{{ i + 1 }}" placeholder="Tekst" type="text" value=''>
+                            </div>
+                        </div>
+                        {% endfor %}
+                                 
+                        <div class="box-content product_total_price"></div>
+                        <div class="product_total_price_net"></div>   
+                        <button class="box-btn" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" id="add-to-cart" type="submit">Dodaj do koszyka</button>
+                                             
+                        <!-- ADD-TO-CART MODAL STARTS HERE -->
+                        <div class="modal fade" id="add_to_cart_modal" tabindex="-1" aria-labelledby="add_to_cart_modal_lable" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="add-to-cart-modal-title"></h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h6 id="add-to-cart-modal-price"></h6>
+                                    <p id="add-to-cart-modal-price-net"></p>
+                                    <h6 id="number-in-cart"></h6>
+                                    <h6 id="cart-total"></h6>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="box-btn" data-bs-dismiss="modal" href="/index" role="button" type="button">Kontynuuję zakupy</button>
+                                    <a class="box-btn" href="/order" role="button" type="button">Przechodzę do realizacji zamówienia</a>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <!-- MODAL ENDS HERE -->
+                    <!--</form>-->
+                </div>
+            </div>            
+        </section>    
+    </div>
+  
+{% endblock %}

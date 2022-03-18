@@ -1,0 +1,331 @@
+{% extends "layout.html" %}
+
+{% block title %}
+   Realizacja zamówienia
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <h1>Twój koszyk</h1>
+        <br>
+        <div class="table-responsive rounded">
+            <table class="table table-light">
+
+                <thead class="table-dark">
+                    <th class="text-start">#</th>
+                    <th class="text-start">PRODUKT</th>
+                    <th class="text-start">TREŚĆ</th>
+                    <th class="text-start">CENA</th>       
+                </thead>
+
+                <tbody id="cart-items"></tbody>
+                 
+            </table>
+        </div> 
+
+        <br>
+        <div class="table-responsive rounded">
+            <table class="table table-light">
+                <tr>
+                    <td class="text-start"><strong>SUMA KOSZYKA</strong></td>
+                    <td class="text-start" id="cart-value-cart-table"></td>
+                </tr>
+                <tr>
+                    <td class="text-start">Suma koszyka netto</td>
+                    <td class="text-start cart-value-net"></td>
+                </tr>
+            </table>
+        </div>
+        <br>
+    </div>
+
+    {% if session_ == "in_session" %}
+    <div id="odd-container">
+        <div class="container">
+            <br><br> 
+            <form> 
+            <h1>Dostawa i płatność</h1>
+            <br>
+            <h4>1. Dane zamawiającego</h4>
+            <div class="order-boxes">           
+                <div class="container-order-page">
+            
+                    <div class="box-order-page">
+                        <h4 class="fw-light">{{ user_name }} {{ user_lastname}}</h4>
+                    </div>
+                    <div class="box-order-page">
+                        Kontakt: <span>{{ user_email }}</span>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <h4>2. Moje adresy</h4>
+            <div class="order-boxes">           
+                <div class="container-order-page">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <div id="odd-container">
+        <div class="container">
+            <button class="box-btn topright" data-bs-toggle="modal" data-bs-target="#login_modal">Masz już konto? Zaloguj się!</button>
+            <br><br> 
+            <form> 
+            <h1>Dostawa i płatność</h1>
+            <br>
+            <h4>1. Dane zamawiającego</h4>   
+                <div class="order-boxes">           
+                    <div class="container-order-page">
+                
+                        <div class="box-order-page">
+                            <div class="form-check form-check-inline mb-3 mt-3">
+                                <input class="form-check-input" type="radio" name="user-title" id="ms" value="Pani">
+                                <label class="form-check-label" for="Pani/Pan">Pani</label>
+                            </div>
+                            <div class="form-check form-check-inline mb-3 mt-3">
+                                <input class="form-check-input" type="radio" name="user-title" id="mr" value="Pan">
+                                <label class="form-check-label" for="Pani/Pan">Pan</label>
+                            </div>
+                        </div>
+
+                        <div class="box-order-page"></div>
+
+                        <div class="box-order-page">
+                            <div class="mb-3">
+                                <label for="user-name" class="form-label">Imię<span class="compulsory-field">*</span></label>
+                                <input type="text" class="form-control" id="user-name" name="user-name" required>    
+                            </div>
+                        </div>
+
+                        <div class="box-order-page">
+                            <div class="mb-3">
+                                <label for="user-lastname" class="form-label">Nazwisko<span class="compulsory-field">*</span></label>
+                                <input type="text" class="form-control" id="user-lastname" name="user-lastname" required>    
+                            </div>
+                        </div>
+
+                        <div class="box-order-page">
+                            <div class="mb-3">
+                                <label for="email-address" class="form-label">Adres email<span class="compulsory-field">*</span></label>
+                                <input type="email" class="form-control" id="user-email-address" name="user-email-address" required>
+                            </div>
+                        </div>
+                        <div class="box-order-page"></div>
+                    </div>
+                </div> 
+
+                <div class="order-boxes">    
+                    <div class="container-order-page" id="create-account">    
+                        <div class="box-order-page">
+                            <div><span><h4>Stwórz konto</h4></span> i zaoszczędź czas przy następnym zamówieniu!</div>
+                        </div>
+
+                        <div class="box-order-page">
+                            <label for="user-password" class="form-label">Hasło</label>
+                            <input type="password" class="form-control" id="user-password" name="user-password">
+                        </div>        
+                    </div>
+                </div>
+               
+                <br><br>
+                <h4>2. Adres</h4>
+                <div class="order-boxes">
+                    <div class="container-order-page">
+                        <div class="box-order-page">
+                            <div class="mb-3 mt-3">
+                                <label for="user-street" class="form-label">Ulica<span class="compulsory-field">*</span></label>
+                                <input type="text" class="form-control" id="user-street" name="user-street" required>    
+                            </div>
+                        </div>
+
+                        <div class="box-order-page">
+                            <div class="mb-3 mt-3 row">
+                                <div class="col-sm-6">
+                                    <label for="user-house-number" class="form-label">Nr domu<span class="compulsory-field">*</span></label>
+                                    <input type="text" class="form-control" id="user-house-number" name="user-house-number" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="user-house-number" class="form-label">Nr lokalu</label>
+                                    <input type="text" class="form-control" id="user-apertment-number" name="user-apertment-number">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-order-page">
+                            <div class="mb-3">  
+                                <label for="user-city" class="form-label">Miasto<span class="compulsory-field">*</span></label>
+                                <input type="text" class="form-control" id="user-city" name="user-city">
+                            </div>
+                        </div>
+                        
+                        <div class="box-order-page">
+                            <div class="mb-3">
+                                <label for="user-postcode" class="form-label">Kod pocztowy<span class="compulsory-field">*</span></label>
+                                <input type="text" class="form-control" id="user-postcode" name="user-postcode" required>
+                            </div>       
+                        </div>
+
+                        <div class="box-order-page">
+                            <div class="mb-3">
+                                <label for="user-country" class="form-label">Kraj<span class="compulsory-field">*</span></label>
+                                <select class="form-select" name="user-country" required>
+                                    <option value disabled selected>-- proszę wybrać --</option>
+                                    <option value="Austria">Austria</option>
+                                    <option value="Belgia">Belgia</option>
+                                    <option value="Chorwacja">Chorwacja</option>
+                                    <option value="Czechy">Czechy</option>
+                                    <option value="Dania">Dania</option>
+                                    <option value="Finlandia">Finlandia</option>
+                                    <option value="Francja">Francja</option>
+                                    <option value="Grecja">Grecja</option>
+                                    <option value="Hiszpania">Hiszpania</option>
+                                    <option value="Holandia">Holandia</option>
+                                    <option value="Irlandia">Irlandia</option>
+                                    <option value="Niemcy">Niemcy</option>
+                                    <option value="Norwegia">Norwegia</option>
+                                    <option value="Polska" selected>Polska</option>
+                                    <option value="Portugalia">Portugalia</option>
+                                    <option value="Szwajcaria">Szwajcaria</option>
+                                    <option value="Szwacja">Szwecja</option>
+                                    <option value="Wielka Brytania">Wielka Brytania</option>
+                                    <option value="Włochy">Włochy</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="box-order-page">
+                            <div class="mb-3">
+                                <label for="user-phone" class="form-label">Nr telefonu komórkowego<span class="compulsory-field">*</span></label>
+                                <input type="tel" class="form-control" id="user-phone" minlength="9" maxlength="9" name="user-phone" required>
+                            </div>
+                        </div>
+                        
+                        <div class="box-order-page mb-3">
+                            <input class="form-check-input" type="checkbox" value="yes" id="invoice">
+                            <label class="form-check-label" for="invoice">Potrzebuję fatury VAT</label>
+                        </div>
+                        <div class="box-order-page"></div>
+                    </div>
+                    <div class="container-order-page my-3" id="invoice-details"></div>        
+                </div>
+
+                <br><br>
+                <h4>2. Sposób dostawy</h4>
+                <div class="order-boxes">
+                    <div class="container-order-page">
+                        <div class="my-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" checked type="radio" name="postage" id="paczkomat-inpost" value="13.90">
+                                <label class="form-check-label" for="paczkomat-inpost">Paczkomat InPost <span>(13.90 zł)</span></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="postage" id="kurier-inpost" value="19.90">
+                                <label class="form-check-label" for="kurier-inpost">Kurier InPost <span>(19.90 zł)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-3 px-5 pb-4">
+                        <label for="extra-postage-info" class="form-label">Dodatkowe informacje dla kuriera</label>
+                        <textarea class="form-control" id="extra-postage-info" name ="extra-postage-info"></textarea>
+                    </div>
+                </div>
+
+                <br><br>
+                <h4>2. Metoda płatności</h4>
+                <div class="order-boxes">
+                    <div class="container-order-page">
+                        <div class="mb-3 mt-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="bank-transfer" name="payment" required type="radio" value="bank-transfer">
+                                <label class="form-check-label" for="bank-transfer">Zapłać przelewem bankowym</label>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
+                <h4>Akceptacja regulaminu</h4>
+                <div class="order-boxes">
+                    <div class="container-order-page">
+                        <div class="m-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="terms-and-conditios-accepted" id="terms-and-conditios-accepted">
+                                <label class="form-check-label" for="terms-and-conditios-accepted">
+                                    <span class="compulsory-field">* </span>
+                                    Potwierdzam, że zapoznałam(em) się z treścią Regulaminu i Polityką Prywatności oraz akceptuję ich postanowienia.
+                                    <span class="compulsory-field"> (Wymagane)</span>
+                                </label>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-light">
+                        <tr>
+                            <td class="text-start"><strong>Wartość koszyka</strong></td>
+                            <td class="text-start" id="cart-value-summary-table"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start"><strong>Wysyłka</strong></td>
+                            <td class="text-start" id="postage-value"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start"><strong>SUMA</strong></td>
+                            <td class="text-start" id="order-total"></td>
+                        </tr>
+                    </table>
+                </div>
+                     
+                <button class="box-btn" id="orderBtn" type="button">Realizuj zamówienie</button>
+            </form>
+            <p class="m-3"><ion-icon name="hourglass-outline"></ion-icon> Zrealizuj zamówienie, aby mieć pewność, że wybrane przez Ciebie produkty wkrótce trafią w Twoje ręce.</p>
+            <br><br>
+        </div>
+    </div>
+    <!--- LOG IN MODAL STARTS HERE -->
+    <div class="modal fade" id="login_modal" tabindex="-1" aria-labelledby="login_modal_lable" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">    
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="boxes">
+                        <div class="container">
+                            <div class="box">
+                        
+                                <h5 class="box-content fw-light text-center">Zaloguj się</h5>
+                                <br>
+                                <form action="/order" method="post">
+                                    <div class="mb-3">
+                                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="login_email" name="email_address" placeholder="Adres email" type="text">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input class="form-control mx-auto w-auto" id="password" name="login_password" placeholder="Hasło" type="password">
+                                    </div>
+                                    <button class="box-btn" role="button" type="submit">Zaloguj się</button>
+                                </form>
+                                <br>
+                                <a class="simple_a" href="#">Nie pamiętasz haszła?</a>
+                            </div>
+                        </div>
+                    </div> 
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!--- CART MODAL ENDS HERE  -->
+    
+    
+{% endblock %}
+     
+

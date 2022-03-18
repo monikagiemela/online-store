@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Popularne Pieczątki
+{% endblock %}
+
+{% block main %}  
+    <div class="container text-center">
+        <h2>Popularne produkty</h2>
+    </div>
+
+    <section class="boxes">
+        <div class="container">
+            <div class="box">
+                <a href="/colop_printer_20">
+                    <img alt="colop_printer_20" src="static/colop_printer_20.jpg">
+                </a>
+                <h2 class="box-title">Colop Printer 20</h2>
+                <p class="box-content">18 zł</p>
+                <form action="/product" method="post">
+                    <input type="hidden" id="3" name="id" value="3">
+                    <input type="submit" class="box-btn" value="Obejrzyj produkt">
+                </form>
+            </div>
+
+            <div class="box">
+                <img alt="colop30" src="static/colop_printer_30.jpg">
+                <h2 class="box-title">Colop Printer 30</h2>
+                <p class="box-content">22 zł</p>
+                <form action="/product" method="get">
+                    <input type="hidden" id="2" name="id" value="2">
+                    <input type="submit" class="box-btn" value="Obejrzyj produkt">
+                </form>
+            </div>
+
+            <div class="box">
+                <img alt="trodat4912" src="static/trodat4912.jpg">
+                <h2 class="box-title">Trodat 4912</h2>
+                <p class="box-content">30 zł</p>
+                <form action="/product" method="get">
+                    <input type="hidden" id="1" name="id" value="1">
+                    <input type="submit" class="box-btn" value="Obejrzyj produkt">
+                </form>
+                       
+            </div>
+
+            <div class="box">
+                <a href="#">
+                    <img alt="trodat9511" src="static/trodat9511.jpg">
+                </a>
+                <h2 class="box-title">Trodat 9511</h2>
+                <p class="box-content">23 zł</p>
+                <form action="/product" method="post">
+                    <input type="hidden" id="4" name="id" value="4">
+                    <input type="submit" class="box-btn" value="Obejrzyj produkt">
+                </form>
+            </div>
+
+            <div class="box">
+                <a href="#">
+                    <img alt="wagraf2" src="static/wagraf2.jpg">
+                </a>
+                <h2 class="box-title">Wagraf 2</h2>
+                <p class="box-content">20 zł</p>
+                <form action="/product" method="post">
+                    <input type="hidden" id="5" name="id" value="5">
+                    <input type="submit" class="box-btn" value="Obejrzyj produkt">
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

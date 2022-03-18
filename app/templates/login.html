@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Logowanie
+{% endblock %}
+
+{% block main %}
+    <br>
+    <br>
+    <div class="boxes">
+        <div class="container-product-page">
+            <div class="box">
+                <h5 class="box-content fw-light text-center">Zaloguj się</h5>
+                <br>
+                <form action="/login" method="post">
+                    <div class="mb-3">
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="email_address" name="email-address" placeholder="Adres email" type="text">
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Hasło" type="password">
+                    </div>
+                    <button class="box-btn" type="submit">Zaloguj się</button>
+                </form>
+            </div>
+            <br>
+            <br>
+            <div class="box-product-page">
+                <h6 class="fw-light">Jeśli nie masz jeszcze konta na MG Print możesz je założyć tutaj</h6>
+                <br>
+                <p>Otrzymasz liczne dodatkowe korzyści:</p>
+                <ul>
+                    <li>podgląd statusu realizacji zamówień</li>
+                    <li>podgląd historii zakupów</li>
+                    <li>brak konieczności wprowadzania swoich danych przy kolejnych zakupach</li>
+                    <li>możliwość otrzymania rabatów i kuponów promocyjnych</li>
+                </ul>
+                <a class="box-btn" href="/register" role="button">Załóż konto</a>
+            </div>
+        </div>
+    </div>
+   
+    
+{% endblock %}

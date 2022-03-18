@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+a {
+    text-decoration: none;
+    color: #fff;
+}
+a:link {
+    color: #fff;
+}
+a:hover {
+    color: #bfa2f3;
+}
+a:active {
+    color:#020202;
+}
+.box-btn {
+    font-weight: 550;
+    background-color: #ffffff;
+    color: #020202;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 36px;
+    border: 2px solid #bfa2f3;
+    border-radius: 20px;
+    margin-top: 30px;
+    transition-duration: 0.4s;
+}
+.box-btn:hover {
+    background-color:#bfa2f3;
+    color: white;
+}
+.btn-large {
+    width: 96%;
+    left: 2px;
+    right: 2px;
+}
+
+body {
+    background-color: #fff;
+    color: #535658;
+    font-family:'Open Sans', sans-serif;
+    text-decoration: none;
+}
+button:visited {
+    color: #020202;
+    background-color: #fff;
+}
+.container {
+    font-size: 15px;
+    margin: 0 auto;
+    max-width: 930px; 
+    width: 100%;   
+}
+#odd-container {
+    background-color: #f3f3f3;
+    width: 100%;
+
+}
+img {
+    height: 210px;
+    margin: 2px;
+    padding: 2px;
+    width: 200px;
+}
+.simple_a {
+    color:#020202;
+}
+.simple_a:link {
+    color: #020202;
+}
+.simple_a:hover {
+    color: #020202;
+    font-weight: bold;
+}
+ul.no-bullets {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+}
+.topright {
+    top: 120px;
+    right: 16px;
+}
+
+/**--------- PRODUCT PAGE GRID -------**/
+.boxes .container-product-page {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+.box-product-page {
+    text-align: justify;
+    padding: 20px;
+    width: 50%;
+    min-width: 370px;    
+}
+.box-product-page img {
+    margin: 2px;
+    padding: 2px;
+    width: 100%;
+    height: auto;
+}
+
+
+/**--------- NAVBAR -----------**/
+nav {
+    background-size: cover;
+    background-color: #4d20c9d8;
+}
+nav ion-icon {
+    font-size: 30px;
+    color: #ffffff;
+    margin: 1px;
+    cursor: pointer;   
+}
+nav .nav-link {
+    font-size: 24px;
+    color: #fff;
+}
+nav .navbar-brand img {
+    height: 80px;
+    margin: 2px;
+    padding: 2px;
+    width: 80px;
+}  
+nav .container {
+    text-align: bottom;
+    display: felx;
+    justify-content: bottom;
+    align-items: bottom;
+    height: 520px;
+}
+
+/* -------- CART PAGE ---------------*/
+p ion-icon {
+    font-size: 25px;  
+    cursor: pointer;
+}
+.img-cart {
+    height: 100px;
+    margin: 2px;
+    padding: 2px;
+    width: 97px;
+}
+
+/** ------- MULTIPLE PRODUCTS PAGE BOXES ------- **/
+.boxes {
+    background-color: #ffffff;
+    padding: 60px 0;
+} 
+.boxes .container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.boxes .box {
+    text-align: center;
+    padding: 20px;
+    width: 33.333%;
+    min-width: 250px;
+}
+.boxes .box-title {
+    color: #020202;
+    font-weight: 400;
+    font-size: 27px;
+    margin: 30px 0;
+}
+.box-content {
+    font-weight: 400;
+    font-size: 1.5em;
+    line-height: 1.2em;
+    color: #020202;
+}
+
+
+/** -------- ORDER PAGE ------------- **/
+.order-boxes {
+    background-color: #ffffff;  
+}
+#create-account {
+    background-color: #7349c22c;
+    height: 100%;
+    padding: 10px 0; 
+}
+.container-order-page {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+.box-order-page {
+    text-align: justify;
+    padding: 5px;
+    width: 45%;
+    min-width: 250px;  
+}
+.box-order-page img {
+    margin: 2px;
+    padding: 2px;
+    width: 100%;
+    height: auto;
+}
+.compulsory-field {
+    color: #6f42c1;
+}
+input:invalid+span:after {
+    position: absolute; content: '✖';
+    padding-left: 5px;
+    color: #bb0340;
+}  
+input:valid+span:after {
+position: absolute;
+content: '✓';
+padding-left: 5px;
+color: #5fd35f;
+}
+th {
+    background-color: #7349c22c;
+}
+
+/** ------------ FOOTER ------------- **/
+
+footer {
+    background-color: #212529;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.2em;
+    text-decoration: none;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+footer .conteiner {
+    height: 125px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.list-group-item {
+    background-color: #212529;
+    color: #fff;
+    text-decoration: none;
+}

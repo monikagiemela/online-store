@@ -20,7 +20,7 @@ class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     trasaction_total = db.Column(db.Float, nullable=False)
     cart_value = db.Column(db.Float, nullable=False)
-    postage_value = db.Column(db.Float, nullable=False)
+    postage_id = db.Column(db.Float, db.ForeignKey('postage.id'), nullable=False)
     first_name = db.Column(db.Text, nullable=False)
     lastname = db.Column(db.Text, nullable=False)
     address = db.Column(db.Text, nullable=False)
@@ -29,6 +29,7 @@ class Orders(db.Model):
     invoice = db.Column(db.Text, nullable=True)
     created = db.Column(db.DateTime, nullable=False) 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    payment_id = db.Column(db.Integer, db.ForeignKey('payment.id'), nullable=False)
     
 class OrderProducts(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
@@ -83,8 +84,9 @@ class Contentcolors(db.Model):
     content_color_name = db.Column(db.Text, nullable=False, unique=True)
 
 class Postage(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     postage_name = db.Column(db.Text, nullable=False, unique=True)
+    postage_price = db.Column(db.Float, nullable=False)
 
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
@@ -104,7 +106,7 @@ class Realization(db.Model):
     returned = db.Column(db.Text, nullable=True)
 
 class Invoices(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False,autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
     company = db.Column(db.Text, db.ForeignKey("orders.company"), nullable=False)
     address = db.Column(db.Text, db.ForeignKey("orders.address"), nullable=False)
@@ -112,3 +114,8 @@ class Invoices(db.Model):
     city = db.Column(db.Text, db.ForeignKey("orders.city"), nullable=False)
     country = db.Column(db.Text, db.ForeignKey("orders.country"), nullable=False)
     nip = db.Column(db.Text, db.ForeignKey("orders.nip"), nullable=False)
+
+class Payment(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    payment_type = db.Column(db.Text, nullable=False)
+

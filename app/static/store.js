@@ -193,7 +193,7 @@ if (document.location.pathname == "/order") {
         var postageE = document.getElementsByName("postage");
         postageE.forEach(function(current) {
             if (current.checked) {
-                var postage = parseFloat(current.value);
+                postage = parseFloat(current.value);
                 document.querySelector("#postage-value").innerHTML = postage.toFixed(2) + " zł";
                 document.querySelector("#order-total").innerHTML = "<b>"+ (cartTotalValue + postage).toFixed(2) + " zł<b>";  
                 current.addEventListener('click', function () {
@@ -232,15 +232,20 @@ if (document.location.pathname == "/order") {
                 invoiceDetailsDiv.innerHTML = ``;
             }
         } )
-        
             
         // Send localStorage data to views.py
-        $('#orderBtn').click(function(){
-            var cartData = JSON.stringify(cart);
-            var postageData = JSON.stringify(postage);
-            var cartTotalValueData = JSON.stringify(cartTotalValue);
+        $('#orderBtnInSession' || '#orderBtnNotInSession').click(function(){
+            //var cartData = JSON.stringify(cart);
+            //var postageData = JSON.stringify(postage);
+            //var cartTotalValueData = JSON.stringify(cartTotalValue);
+            //console.log(cart);
+            //console.log(postage);
+            //console.log(cartTotalValue);
+
+            var data = {"cartData": cart, "postageData": postage, "cartTotalValueData": cartTotalValue};
+            console.log(data);
             $.ajax({
-                data: {"cartData": cartData, "postageData": postageData, "cartTotalValueData": cartTotalValueData},
+                data: JSON.stringify(data),
                 dataType: 'json',
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',

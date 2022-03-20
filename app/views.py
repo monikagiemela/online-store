@@ -5,13 +5,15 @@ import re
 
 
 from app import app, db
-from app.models import Brands, Cart, Categories, Casecolors, Content, Contentcolors, Invoices,  Orders, OrderProducts, Products,  Postage, Realization, Users
+from app.models import Brands, Cart, Categories, Casecolors, Content, Contentcolors, Invoices,  Orders, OrderProducts, Products,  Postage, Realization, Users, Payment
 from app.helpers import apology, login_required, absolute, PLN
 
 from flask import flash, redirect, render_template, request, session, jsonify, url_for
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+import json
+
 
 @app.after_request
 def after_request(response):
@@ -193,19 +195,71 @@ def order():
             return render_template("order.html")
     
     # If route reached by "POST"
-    else:
+    elif request.method == "POST":
+        
+        # Initiate variable that will store the total value of transaction
+        transaction_total = 0
+        
+        # Request data from the order form
+        postage_price = float(request.form['postage'])
+        print(f"Postage price: {postage_price}")
+        transaction_total += postage_price
+        postage = Postage.query.filter_by(postage_price=postage_price).first()
+        postage_id = postage.id
+        
+        payment_type = request.form["payment"]
+        print(f"Payment type: {payment_type}")
+        payment = Payment.query.filter_by(payment_type=payment_type).first()
+        payment_id = payment.id
+
+        # User is logged in
+        if session.get("user_id"):
+            id = session.get("user_id")
+        
+            # Fetch user data from Users table in db
+            user = Users.query.filter_by(id=id).first()
+            user_name = user.first_name
+            user_lastname = user.last_name
+            user_email = user.email_address  
+            user_phone = user.phone
+            postage_address = user.address
+            user_postcode = user.post_code
+            user_city = user.city
+            user_country = user.country
+            if user.company:
+                company_name = user.company
+                nip = user.nip
+            else:
+                company_name = None
+                nip = None
+            print(company_name)
         # User chose to log in now through login form in modal
-        if request.form.get("login_password"):                
-            user_email = request.form.get("login_email")
-            password = request.form.get("login_password")
+        elif request.form.get("login_password"):                
+            # Ensure email_address was submitted
+            try:
+                email_address = request.form.get("email-address")
+            except AttributeError:
+                print("Email not submitted")
+                return apology("Podaj address email, który podałeś przy rejestracji", 400)
+            
+            # Ensure password was submitted
+            try:
+                password = request.form.get("password")
+            except AttributeError:
+                print("Password not submitted")
+                return apology("Podaj hasło", 400)
         
             # Query database for email_address and check password  
-            if not Users.query.filter_by(email_address=user_email).first():
+            try:
+                user = Users.query.filter_by(email_address=email_address).first()
+            except AttributeError:
+                print("Email not in db")
                 return apology("Nieprawidłowy adres email lub hasło", 400)
-        
-            user = Users.query.filter_by(email_address=user_email).first()
-        
-            if not check_password_hash(user.hash, password):
+                
+            try:
+                check_password_hash(user.hash, password)
+            except:
+                print("Wrong password")
                 return apology("Nieprawidłowy adres email lub hasło", 400)
         
             # Remember which user has logged in
@@ -228,6 +282,7 @@ def order():
                 nip = "individual"
             
             session_ = "in_session"
+            
             return render_template("order.html", user_name=user_name, user_lastname=user_lastname, user_email=user_email, user_phone=user_phone, postage_address=postage_address, user_postcode=user_postcode, user_city=user_city, user_country=user_country, company_name=company_name, nip=nip, session_=session_)
 
         # User is not registered 
@@ -235,6 +290,9 @@ def order():
             user_name = request.form.get("user-name")
             user_lastname = request.form.get("user-lastname")
             user_email = request.form.get("user-email-address")
+            
+            user_password = ''
+            hash = ''
             if request.form.get("user-password"):
                 user_password = request.form.get("user-password")
                 hash = generate_password_hash(user_password, method='pbkdf2:sha256', salt_length=8)
@@ -248,7 +306,7 @@ def order():
             user_phone = request.form.get("user-phone") 
             
             try:
-                user_apartment_number = request.form.get("user-apertment-number")
+                user_apartment_number = request.form.get("user-apartment-number")
                 postage_address = f"{user_street} {user_house_number}/{user_apartment_number}"
             except:
                 postage_address = f"{user_street} {user_house_number}"
@@ -270,62 +328,18 @@ def order():
                 
                 db.session.add(user)
                 db.session.commit()
-
-        # Data received through Ajax request
-        data = request.json
-
-        # Initiate variable that will store total value of transaction
-        transaction_total = 0
-
-        # Initiate list that will store user's inputs of content and lines which user left blank 
-        c_list = []
-
-        # Loop through Ajax data
-        for data_item in data:    
-            
-            lines_list = []    
-            if data_item == "cartData":
-                for cart_item_key, cart_item_value in data_item.items:
-                    # Adds all items from Ajax dict's cartData dict whose keys start with "line" to a lines_list                 
-                    if cart_item_key.startswith("line"):
-                        lines_list.append(cart_item_value)
-            elif data_item == "postageData":
-                postage_price = float(data_item["postageData"])
-                transaction_total += postage_price
-            elif data_item == "cartTotalValueData":
-                cart_value = float(data_item["cartTotalValueData"])
-                transaction_total += cart_value
-
-
-            # Creates a list of 9 elements ready to populate Content table in db
-            for num in range(8):
-                try:
-                    line = lines_list[num]
-                    print(line)
-                    c_list.append(line)
-                except IndexError:
-                    line = "----"
-                    print(line)
-                    c_list.append(line)
-            
-            product_name = cart_item_key["productName"]
-            content_color = cart_item_key["contentColor"]
-            case_color = cart_item_key["caseColor"]
-            product_price = cart_item_key["productTotalPrice"]
-                                    
-        jsonify('success')
-        print(c_list)
-
+    
+        
         # Add row to Order table in db
         today = datetime.today()
         if id:
-            user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_value=postage_price, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, user_id=id)
+            user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_id=postage_id, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, user_id=id, payment_id=payment_id)
         elif hash:
             user = Users.query.filter_by(hash=hash).first()
             user_id = user.id
-            user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_value=postage_price, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, user_id=user_id)
+            user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_id=postage_id, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, user_id=user_id, payment_id=payment_id)
         else:
-            user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_value=postage_price, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today)
+            user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_id=postage_id, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, payment_id=payment_id)
         db.session.add(user_order)
         db.session.commit() 
         
@@ -340,28 +354,76 @@ def order():
         else:
             realization = Realization(order_id=order_id)
         db.session.add(realization)
-        db.session.commit()
+        db.session.commit()     
 
-        # Add row to Content table in db
-        content_lines = Content(line_1=c_list[0], line_2=c_list[1], line_3=c_list[2], line_4=c_list[3], line_5=c_list[4], line_6=c_list[5], line_7=c_list[6], line_8=c_list[7], line_9=c_list[8])  
-        db.session.add(content_lines)
-        db.session.commit()      
+        # Data received through Ajax request
+        try:
+            data = json.loads(request.data)
+            #print(data)
+        except:
+            print("Ajax no respose")    
+
+        # Loop through Ajax data
+        for data_item_keys, data_item_values in data.items():
+                     
+            #if data_item_keys == "postageData":
+                #postage_price = float(data["postageData"])
+                #transaction_total += postage_price
+                #postage = Postage.query.filter_by(postage_price=postage_price).first()
+                #postage_id = postage.id
+                 
+            if data_item_keys == "cartTotalValueData":
+                cart_value = float(data["cartTotalValueData"])
+                transaction_total += cart_value 
+            
+            elif data_item_keys == "cartData":
+              
+                for cart_item in data_item_values:
+                    print(cart_item) 
+                    
+                    for cart_item_key, cart_item_value in cart_item.items():
+
+                        product_name = cart_item["productName"]
+                        content_color = cart_item["contentColor"]
+                        case_color = cart_item["caseColor"]
+                        product_price = cart_item["productTotalPrice"]
                 
-        # Add row with details to Cart table in db
-        content_id = content_lines.id
-        product_ = Products.query.filter_by(product_name=product_name).first()
-        product_id = product_.id
+                    # Adds all items from Ajax dict's cartData dict whose keys start with "line" to a lines_list
+                    lines_list = [val for key, val in cart_item.items() if key.startswith("line")]
+                        
+                    # Creates a list of 9 elements ready to populate Content table in db
+                    c_list = []
+                    for num in range(9):
+                        try:
+                            line = lines_list[num]
+                            #print(line)
+                            c_list.append(line)
+                        except IndexError:
+                            line = "----"
+                            #print(line)
+                            c_list.append(line)
+                    jsonify('success')
+                    print(c_list)
+                    # Add row to Content table in db
+                    content_lines = Content(line_1=c_list[0], line_2=c_list[1], line_3=c_list[2], line_4=c_list[3], line_5=c_list[4], line_6=c_list[5], line_7=c_list[6], line_8=c_list[7], line_9=c_list[8])  
+                    db.session.add(content_lines)
+                    db.session.commit()
 
-        content_color_ = Contentcolors.query.filter_by(content_color_name=content_color).first()
-        content_color_id = content_color_.id
+                    # Add row with details to Cart table in db
+                    content_id = content_lines.id
+                    product_ = Products.query.filter_by(product_name=product_name).first()
+                    product_id = product_.id
 
-        case_color_ = Casecolors.query.filter_by(case_color_name=case_color).first()
-        case_color_id = case_color_.id
+                    content_color_ = Contentcolors.query.filter_by(content_color_name=content_color).first()
+                    content_color_id = content_color_.id
 
-        order_product = Cart(product_id=product_id, content_id=content_id, content_color_id=content_color_id, case_color_id=case_color_id, price=product_price)
-        db.session.add(order_product)
-        db.session.commit()
-    
+                    case_color_ = Casecolors.query.filter_by(case_color_name=case_color).first()
+                    case_color_id = case_color_.id
+
+                    order_product = Cart(product_id=product_id, content_id=content_id, content_color_id=content_color_id, case_color_id=case_color_id, price=product_price)
+                    db.session.add(order_product)
+                    db.session.commit()               
+        
         flash("Dziękujemy za zamówienie!")
         return redirect("/")
 

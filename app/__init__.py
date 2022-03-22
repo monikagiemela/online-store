@@ -39,6 +39,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///store.db'
 db = SQLAlchemy(app)
 
 from app import views
+from app.views_order import order
+from app.views_password import password
+from app.views_product import product
+from app.views_login import login
+from app.views_register import register
 from app import models
 
 

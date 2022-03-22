@@ -177,7 +177,7 @@ if (document.location.pathname == "/order") {
                 </tr>`;    
         }
 
-        // Fill every cart-value elements in template with value of the cartTotalValue variable
+        // Fill every cart-value element in template with the value of the cartTotalValue variable
         document.querySelector("#cart-value-cart-table").innerHTML = "<b>" + cartTotalValue.toFixed(2) + " zł</b>";
         document.querySelector("#cart-value-summary-table").innerHTML = cartTotalValue.toFixed(2) + " zł";
  
@@ -208,7 +208,24 @@ if (document.location.pathname == "/order") {
                     document.querySelector("#order-total").innerHTML = "<b>"+ (cartTotalValue + postage).toFixed(2) + " zł<b>"; 
                 });
             }
-        }); 
+        });
+        
+        // Listen to user selection of ppayment type
+        var payment;
+        var paymentE = document.getElementsByName("payment");
+        paymentE.forEach(function(current) {
+            if (current.checked) {
+                payment = current.value;
+                current.addEventListener('click', function() {
+                    payment = current.value;
+                });
+            } else {
+                current.addEventListener('click', function() {
+                    payment = current.value;
+                });
+            }
+        });
+
         var invoice = document.querySelector("#invoice");
         invoice.addEventListener("click", () => {
             if (invoice.checked) {
@@ -235,14 +252,8 @@ if (document.location.pathname == "/order") {
             
         // Send localStorage data to views.py
         $('#orderBtnInSession' || '#orderBtnNotInSession').click(function(){
-            //var cartData = JSON.stringify(cart);
-            //var postageData = JSON.stringify(postage);
-            //var cartTotalValueData = JSON.stringify(cartTotalValue);
-            //console.log(cart);
-            //console.log(postage);
-            //console.log(cartTotalValue);
-
-            var data = {"cartData": cart, "postageData": postage, "cartTotalValueData": cartTotalValue};
+            console.log(payment);
+            var data = {"cartData": cart, "postageData": postage, "paymentData": payment, "cartTotalValueData": cartTotalValue};
             console.log(data);
             $.ajax({
                 data: JSON.stringify(data),

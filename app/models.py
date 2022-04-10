@@ -31,7 +31,7 @@ class Orders(db.Model):
     country = db.Column(db.Text, nullable=False)
     invoice = db.Column(db.Text, nullable=True)
     created = db.Column(db.DateTime, nullable=False) 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     payment_id = db.Column(db.Integer, db.ForeignKey('payment.id'), nullable=False)
     
 class OrderProducts(db.Model):
@@ -111,12 +111,12 @@ class Realization(db.Model):
 class Invoices(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
-    company = db.Column(db.Text, db.ForeignKey("orders.company"), nullable=False)
-    address = db.Column(db.Text, db.ForeignKey("orders.address"), nullable=False)
-    post_code = db.Column(db.Text, db.ForeignKey("orders.post_code"), nullable=False)
-    city = db.Column(db.Text, db.ForeignKey("orders.city"), nullable=False)
-    country = db.Column(db.Text, db.ForeignKey("orders.country"), nullable=False)
-    nip = db.Column(db.Text, db.ForeignKey("orders.nip"), nullable=False)
+    company = db.Column(db.Text, nullable=False)
+    address = db.Column(db.Text, nullable=False)
+    post_code = db.Column(db.Text, nullable=False)
+    city = db.Column(db.Text, nullable=False)
+    country = db.Column(db.Text, nullable=False)
+    nip = db.Column(db.Text, nullable=False)
 
 class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)

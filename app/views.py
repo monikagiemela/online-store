@@ -24,7 +24,7 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def index():
     """Show homepage with most popular products"""
     id = session.get("user_id")

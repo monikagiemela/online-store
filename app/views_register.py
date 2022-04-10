@@ -28,7 +28,7 @@ def register():
         user_email = request.form.get("user-email-address")
 
         user_password = request.form.get("user-password")
-        hash = generate_password_hash(user_password, method='pbkdf2:sha256', salt_length=8)
+        hash = generate_password_hash(user_password, method='pbkdf2:sha256', salt_length=16)
             
         user_street = request.form.get("user-street")
         user_house_number = request.form.get("user-house-number")

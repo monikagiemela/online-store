@@ -42,59 +42,59 @@
 <!-- CART ENDS HERE -->
 
     {% if session_ == "in_session" %}
-    <form action="/order" method="post"> 
+    <form action="/order" id="form-in-session" method="post">
+        <input type='hidden' name='front-end-data' id='front-end-data' value=''> 
         <div id="odd-container">
             <div class="container">
             <br><br> 
                 
-                    <h1>Dostawa i płatność</h1>
-                    <br>
-                    <h4>1. Dane zamawiającego</h4>
-                    <div class="order-boxes">           
-                        <div class="container-order-page m-3">
+                <h1>Dostawa i płatność</h1>
+                <br>
+                <h4>1. Dane zamawiającego</h4>
+                <div class="order-boxes">           
+                    <div class="container-order-page m-3">
+                
+                        <div class="box-order-page m-3">
+                            <h4 class="fw-light">{{ user_name }} {{ user_lastname}}</h4>
+                        </div>
+                        
+                        <div class="box-order-page m-3">
+                            Kontakt: <span>{{ user_email }}</span>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <h4>2. Moje adresy</h4>
+                <div class="order-boxes">           
+                    <div class="container-order-page mt-3 mx-3">
+                        <div class="box-order-page m-3">
+                            <ul class="no-bullets">
+                                <li>Imię i nazwisko: <span>{{ user_name }} {{ user_lastname}}</span></li>
+                                <li>Telefon: <span>{{ user_phone }}</span></li>
+                                <li>Adres: ul. <span>{{ postage_address }}</span></li>
+                            </ul>   
+                        </div>
+                        
+                        <div class="box-order-page m-3">
+                            <ul class="no-bullets">
+                                <li>Kod pocztowy: <span>{{ user_postcode }}</span></li>
+                                <li>Miasto: <span>{{ user_city }}</span></li>
+                                <li>Kraj: <span>{{ user_country }}</span></li>
+                            </ul>   
+                        </div>
+                    </div>
                     
-                            <div class="box-order-page m-3">
-                                <h4 class="fw-light">{{ user_name }} {{ user_lastname}}</h4>
-                            </div>
-                            
-                            <div class="box-order-page m-3">
-                                Kontakt: <span>{{ user_email }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <h4>2. Moje adresy</h4>
-                    <div class="order-boxes">           
-                        <div class="container-order-page mt-3 mx-3">
-                            <div class="box-order-page m-3">
-                                <ul class="no-bullets">
-                                    <li>Imię i nazwisko: <span>{{ user_name }} {{ user_lastname}}</span></li>
-                                    <li>Telefon: <span>{{ user_phone }}</span></li>
-                                    <li>Adres: ul. <span>{{ postage_address }}</span></li>
-                                </ul>   
-                            </div>
-                            
-                            <div class="box-order-page m-3">
-                                <ul class="no-bullets">
-                                    <li>Kod pocztowy: <span>{{ user_postcode }}</span></li>
-                                    <li>Miasto: <span>{{ user_city }}</span></li>
-                                    <li>Kraj: <span>{{ user_country }}</span></li>
-                                </ul>   
-                            </div>
+                    <div class="container-order-page">    
+                        <div class="box-order-page">
+                            <input class="form-check-input" name="invoice" type="checkbox" value="yes" id="invoice">
+                            <label class="form-check-label" for="invoice">Potrzebuję faktury VAT</label>
                         </div>
                         
-                        <div class="container-order-page">    
-                            <div class="box-order-page">
-                                <input class="form-check-input" type="checkbox" value="yes" id="invoice">
-                                <label class="form-check-label" for="invoice">Potrzebuję faktury VAT</label>
-                            </div>
-                            
-                            <div class="box-order-page"></div>                
-                        </div>
-                        
-                        <div class="container-order-page" id="invoice-details"></div>                 
+                        <div class="box-order-page"></div>                
                     </div>
-                </form>           
+                    
+                    <div class="container-order-page" id="invoice-details"></div>                 
+                </div>          
             </div>       
         </div>
 
@@ -189,7 +189,8 @@
         <div class="container">
             <button class="box-btn topright" data-bs-toggle="modal" data-bs-target="#login_modal">Masz już konto? Zaloguj się!</button>
             <br><br> 
-            <form action="/order" method="post"> 
+            <form action="/order" id="form-not-in-session" method="post">
+                <input type='hidden' name='front-end-data' id='front-end-data' value=''>
                 <h1>Dostawa i płatność</h1>
                 <br>
                 <h4>1. Dane zamawiającego</h4>   
@@ -264,8 +265,8 @@
                                     <input type="text" class="form-control" id="user-house-number" name="user-house-number" required>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="user-house-number" class="form-label">Nr lokalu</label>
-                                    <input type="text" class="form-control" id="user-apertment-number" name="user-apertment-number">
+                                    <label for="user-apartment-number" class="form-label">Nr lokalu</label>
+                                    <input type="text" class="form-control" id="user-apartment-number" name="user-apartment-number">
                                 </div>
                             </div>
                         </div>
@@ -320,7 +321,7 @@
                         </div>
 
                         <div class="box-order-page mb-3">
-                            <input class="form-check-input" type="checkbox" value="yes" id="invoice">
+                            <input class="form-check-input" type="checkbox" name="invoice" value="yes" id="invoice">
                             <label class="form-check-label" for="invoice">Potrzebuję faktury VAT</label>
                         </div>
                         
@@ -430,9 +431,9 @@
                     
                             <h5 class="box-content fw-light text-center">Zaloguj się</h5>
                             <br>
-                            <form action="/order" method="post">
+                            <form action="/order" id="form-login" method="post">
                                 <div class="mb-3">
-                                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="login_email" name="login-email-address" placeholder="Adres email" type="text">
+                                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="login_email" name="login-email-address" placeholder="Adres email" type="email">
                                 </div>
                                 <div class="mb-3">
                                     <input class="form-control mx-auto w-auto" id="password" name="login-password" placeholder="Hasło" type="password">

@@ -1,4 +1,4 @@
-console.log(localStorage.length);
+//console.log(localStorage.length);
 
 /*** GLOBAL FUNCTION | FETCHES LOCALSTORAGE AND STORES IT IN AN ARRAY */
 function getLocalStorage() {  
@@ -210,7 +210,7 @@ if (document.location.pathname == "/order") {
             }
         });
         
-        // Listen to user selection of ppayment type
+        // Listen to user selection of payment type
         var payment;
         var paymentE = document.getElementsByName("payment");
         paymentE.forEach(function(current) {
@@ -248,29 +248,65 @@ if (document.location.pathname == "/order") {
                 var invoiceDetailsDiv = document.querySelector("#invoice-details");
                 invoiceDetailsDiv.innerHTML = ``;
             }
-        } )
-            
-        // Send localStorage data to views.py
-        $('#orderBtnInSession' || '#orderBtnNotInSession').click(function(){
-            console.log(payment);
-            var data = {"cartData": cart, "postageData": postage, "paymentData": payment, "cartTotalValueData": cartTotalValue};
-            console.log(data);
+        } );
+        
+        var frontEndData = JSON.stringify({"cartData": cart, "cartTotalValueData": cartTotalValue});
+        document.getElementById('front-end-data').setAttribute('value', frontEndData);
+    }
+
+        /*
+        // Send localStorage data to views_order.py
+        $('#form-in-session' || '#form-not-in-session').on('submit', function(e){    
+            e.preventDefault();
+            var formValues = $(this).serialize();
+            console.log(formValues);
+            var serverData = {"cartData": cart, "cartTotalValueData": cartTotalValue, "formValuesData": formValues};
+            console.log(serverData);
+
             $.ajax({
-                data: JSON.stringify(data),
+                data: JSON.stringify(serverData),
                 dataType: 'json',
                 type: 'POST',
                 contentType: 'application/json; charset=utf-8',
                 url: "/order",
-                success: function(m){
-                    console.log(m);
+                success: function () {
+
+                    //location.replace("index.html");
+                    //document.replaceWith();
+                    widndow.location.href="/"; 
+                         
                 },
-                error: function(m){
-                    console.log(m);
+                error: function(){
+                    console.log("Ajax Error");
                 }
             });
+
+            $(document).ajaxSuccess(function(){
+                alert("AJAX request successfully completed");
+            });
         });
-    }  
-}    
+    }
+    $('#form-login').on('submit', function(e){
+        e.preventDefault();
+        var loginFormValues = $(this).serialize();
+        var loginServerData = {'loginServerData': loginFormValues};
+
+        $.ajax({
+            data: JSON.stringify(loginServerData),
+            dataType: 'json',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            url: "/order",
+            success: function () {
+               
+                location.reload(true);
+            }
+        });    
+    });
+    */
+}
+
+
         
 
         

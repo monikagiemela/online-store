@@ -1,18 +1,30 @@
-//console.log(localStorage.length);
+console.log(localStorage);
+
+/*** GLOBAL FUNCTION | FETCHES LOCALSTORAGE KEYS IN ARRAY ***/
+function getStorageKeys() {
+    // Initiate an array that will hold all keys fetched from local storage
+    var localStorageKeys = [];
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        localStorageKeys.push(key);
+    }
+    console.log(localStorageKeys);
+    return localStorageKeys;
+}
 
 /*** GLOBAL FUNCTION | FETCHES LOCALSTORAGE AND STORES IT IN AN ARRAY */
-function getLocalStorage() {  
-    
+function getLocalStorage() {
+    var localStorageKeys = getStorageKeys();      
     // Initiate an array that will hold all values fetched from local storage
     var localStorageArray = [];
-
-    for (var i=0; i < localStorage.length; i++) {
-        var parsedItem = JSON.parse(localStorage.getItem(i + 1)); 
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        var parsedItem = JSON.parse(localStorage.getItem(key)); 
+        parsedItem.localStorageKey = key;
         localStorageArray.push(parsedItem);
     }  
     return localStorageArray;
 }
-
 
 /**** PRODUCT PAGE | ADD TO CART ****/
 // Listen for when the user's finished typing content of each line and
@@ -74,10 +86,11 @@ if (document.location.pathname == "/product") {
                       
         // Add product details to add-to-cart modal  
         var cart = getLocalStorage();
+        console.log(cart);
+        var localStorageKeys = getStorageKeys();
         var cartTotalValue = 0;
-        for (var i=0; i < cart.length; i++) {
-            cartTotalValue += cart[i].productTotalPrice;
-            
+        for (i in localStorageKeys) {
+            cartTotalValue += cart[i].productTotalPrice;        
         }
         document.querySelector("#add-to-cart-modal-title").innerHTML = "Pieczątka <b>" + productName + "</b> został dodany do koszyka";
         document.querySelector("#add-to-cart-modal-price").innerHTML = "Cena: " + productTotalPrice.toFixed(2) + " zł";
@@ -94,30 +107,51 @@ if (document.getElementById("cart")) {
         
         // Get data from localStorage
         var cart = getLocalStorage();
+        console.log(cart);
         var cartTotalValue = 0;
         var cartProductsDiv = document.querySelector("#cart-products");
-        var modalContentDiv = document.querySelector(".modal-content");
-        
+        var modalContentDiv = document.querySelector(".modal-content");      
+        var localStorageKeys = getStorageKeys();      
         if (cart.length > 0) {
             cartProductsDiv.innerHTML = '';
-            for (var i=0; i < cart.length; i++) {
-                cartTotalValue += cart[i].productTotalPrice;
-                var productName = cart[i].productName;
-                var caseColor = cart[i].caseColor;
-                var contentColor = cart[i].contentColor;
-                var productPrice = cart[i].productTotalPrice;
-        
-                cartProductsDiv.innerHTML += 
-                `<div class="row">
-                    <div class="col-md-4 ms-auto" id="cart-product-title">Pieczątka ${ productName }</div>
-                    <div class="col-md-2 ms-auto" id="cart-product-case-color">${ caseColor }</div>
-                    <div class="col-md-2 ms-auto" id="cart-product-content-color">${ contentColor }</div>
-                    <div class="col-md-2 ms-auto" id="product-total-price">${ productPrice.toFixed(2) } zł</div>
-                </div>
-                <br>`
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i]) {    
+                    cartTotalValue += cart[i].productTotalPrice;
+                    var localStorageKey = cart[i].localStorageKey;
+                    var productName = cart[i].productName;
+                    var caseColor = cart[i].caseColor;
+                    var contentColor = cart[i].contentColor;
+                    var productPrice = cart[i].productTotalPrice;
+            
+                    cartProductsDiv.innerHTML += 
+                    `<div class="row" id=${localStorageKey}>
+                        <td class="col-md-auto" id="cart-product-title">Pieczątka ${ productName }</td>
+                        <td class="col-md-auto" id="cart-product-case-color">${ caseColor }</td>
+                        <td class="col-md-auto" id="cart-product-content-color">${ contentColor }</td>
+                        <td class="col-md-auto" id="product-total-price">${ productPrice.toFixed(2) } zł</td>
+                        <td class="col-md-auto"><button class="remove-product" data-index=${localStorageKey}><ion-icon name="trash-outline"></ion-icon></button></td>
+                    </div>
+                    <br>`
+                }               
             }
             document.querySelector("#cart-total").innerHTML = "<b>" + cartTotalValue.toFixed(2) + " zł</b>";
-            console.log(cartTotalValue);                        
+
+            var removeBtns = document.querySelectorAll(".remove-product");
+            
+            removeBtns.forEach(function(current) {
+                
+                console.log(current.getAttribute("data-index"));
+                current.addEventListener("click", function() {
+        
+                    var localStorageKey = current.getAttribute("data-index");
+                    console.log(localStorageKey);
+                    localStorage.removeItem(localStorageKey);
+                    var itemDiv = document.getElementById(localStorageKey);
+                    itemDiv.remove();
+                    location.reload();
+                });
+            });
+                      
         } else {
             modalContentDiv.innerHTML = 
                 `<div class="modal-header">
@@ -134,47 +168,51 @@ if (document.getElementById("cart")) {
                     <button type="button" class="box-btn">Przejdź do produktów</button>
                 </div>`            
         }    
-    });
+    });   
 }
-
 
 /*** ORDER PAGE ***/
 if (document.location.pathname == "/order") { 
     
     // Get data from localStorage object
     var cart = getLocalStorage();
-    
+    var localStorageKeys = getStorageKeys();    
     var cartItemsDiv = document.querySelector("#cart-items");
     var cartTotalValue = 0;
     
-    // If cart if not empty loop through cart and assign cart items values to variables
+    // If cart is not empty loop through cart and assign cart items values to variables
     if (cart.length > 0) {
-        
-        for (var i = 0; i < cart.length; i++) {
-            var productPrice = cart[i].productTotalPrice;
-            cartTotalValue += productPrice;
-            var productName = cart[i].productName;
-            var caseColor = cart[i].caseColor;
-            var contentColor = cart[i].contentColor;
-            
-            // Loop through a cart item and add all values whose keys start with "line"
-            let productContentLines = '';
-            for (const [key, value] of Object.entries(cart[i])) {
-                if (key.startsWith("line")) {
-                    productContentLines += `<li>${ value }</li>`;
+    
+        var index = 1
+        for (i in localStorageKeys) {
+            if (cart[i]) {
+                var productPrice = cart[i].productTotalPrice;
+                cartTotalValue += productPrice;
+                var productName = cart[i].productName;
+                var caseColor = cart[i].caseColor;
+                var contentColor = cart[i].contentColor;
+                
+                // Loop through a cart item and add all values whose keys start with "line"
+                let productContentLines = '';
+                for (const [key, value] of Object.entries(cart[i])) {
+                    if (key.startsWith("line")) {
+                        productContentLines += `<li>${ value }</li>`;
+                    }
                 }
-            }
 
-            // Populate order.html with data from localStorage
-            cartItemsDiv.innerHTML +=
-                `<tr>
-                    <td class="text-start">${ i + 1 }</td>
-                    <td class="text-start">${ productName }</td>
-                    <td class="text-start">
-                        <ol>${ productContentLines }</ol>
-                    </td>
-                    <td class="text-start">${ productPrice.toFixed(2) } zł</td>    
-                </tr>`;    
+                // Populate order.html with data from localStorage
+                cartItemsDiv.innerHTML +=
+                    `<tr>
+                        <td class="text-start">${ index }</td>
+                        <td class="text-start">${ productName }</td>
+                        <td class="text-start">
+                            <ol>${ productContentLines }</ol>
+                        </td>
+                        <td class="text-start">${ productPrice.toFixed(2) } zł</td>    
+                    </tr>`;    
+                
+                index ++;
+            }        
         }
 
         // Fill every cart-value element in template with the value of the cartTotalValue variable
@@ -226,6 +264,7 @@ if (document.location.pathname == "/order") {
             }
         });
 
+        // Listen for user clicking check input to request an invoice
         var invoice = document.querySelector("#invoice");
         invoice.addEventListener("click", () => {
             if (invoice.checked) {
@@ -250,6 +289,7 @@ if (document.location.pathname == "/order") {
             }
         } );
         
+        // Stringify cart items and cart total value and add it as hidden input in the order form
         var frontEndData = JSON.stringify({"cartData": cart, "cartTotalValueData": cartTotalValue});
         document.getElementById('front-end-data').setAttribute('value', frontEndData);
     }

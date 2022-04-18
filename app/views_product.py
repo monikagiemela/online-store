@@ -30,7 +30,9 @@ def product():
     product_price = product.price
     product_description = product.description
     brand_id = product.brand_id
-    brand_name = Brands.query.filter_by(id=brand_id)
+    brand_name_ = Brands.query.filter_by(id=brand_id).first()
+    brand_name = brand_name_.brand_name
+    print(brand_name)
 
     if product.availability > 0:
         product_availability = "Dostępny"
@@ -61,5 +63,5 @@ def product():
     return render_template("product.html", product_name=product_name, 
     product_availability=product_availability, product_symbol=product_symbol, 
     print_size=print_size, max_lines=max_lines, product_price=product_price,
-    product_description=product_description,content_colors_list=content_colors_list,
+    product_description=product_description, brand_name=brand_name, content_colors_list=content_colors_list,
     case_colors_list=case_colors_list)

@@ -12,7 +12,7 @@
             <div class="container-product-page">
                 
                 <div class="box-product-page">
-                    <img alt="Pieczątka {{ product_name }}" src="static/{{ product_symbol }}.jpg">
+                    <img alt="Pieczątka {{ product_name }}" src="static/{{ brand_name }}/{{ product_symbol }}/{{ product_symbol }}_red.jpeg">
                 </div>
 
                 <div class="box-product-page">
@@ -20,7 +20,7 @@
                     <div class="box-content">Cena: {{ product_price | PLN }}</div>
                     <div>Cena netto: {{ (product_price / 1.23) | PLN }}</div>
                     <button value=0 class="box-btn" id="id">Dodaj do koszyka sam automat</button>
-                    <input type="hidden" value="18"/>
+                    <input type="hidden" value="{{ product_price }}"/>
                     <p>Lub przejdź do spersonalizowania treści pieczątki poniżej</p>   
                     <br>
                     <ul class="no-bullets">

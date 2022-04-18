@@ -17,6 +17,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 import json
 
+from pprint import pprint
+
 
 @app.route("/order", methods=["GET", "POST"])
 def order():
@@ -46,7 +48,12 @@ def order():
             
             session_ = "in_session"
 
-            return render_template("order.html", user_name=user_name, user_lastname=user_lastname, user_email=user_email, user_phone=user_phone, postage_address=postage_address, user_postcode=user_postcode, user_city=user_city, user_country=user_country, company_name=company_name, nip=nip, session_=session_)
+            return render_template("order.html", user_name=user_name, 
+            user_lastname=user_lastname, user_email=user_email, 
+            user_phone=user_phone, postage_address=postage_address, 
+            user_postcode=user_postcode, user_city=user_city, 
+            user_country=user_country, company_name=company_name, nip=nip, 
+            session_=session_)
         
         # User is not logged in
         else:
@@ -106,7 +113,7 @@ def order():
 
             # Cart data sent by form's hidden input
             cart_items = front_end_data["cartData"]
-            print(cart_items)
+            pprint(cart_items)
             
             # This is a list of items in cart (list of dictionaries)
             for cart_item in cart_items:
@@ -125,7 +132,10 @@ def order():
                         c_list.append(line)
         
                 # Add row to Content table in db
-                content_lines = Content(line_1=c_list[0], line_2=c_list[1], line_3=c_list[2], line_4=c_list[3], line_5=c_list[4], line_6=c_list[5], line_7=c_list[6], line_8=c_list[7], line_9=c_list[8])  
+                content_lines = Content(line_1=c_list[0], line_2=c_list[1], 
+                line_3=c_list[2], line_4=c_list[3], line_5=c_list[4], 
+                line_6=c_list[5], line_7=c_list[6], line_8=c_list[7], 
+                line_9=c_list[8])  
                 db.session.add(content_lines)
                 db.session.commit()
 
@@ -190,7 +200,8 @@ def order():
                 
                 if request.form.get('user-password'):
                     user_password = request.form.get('user-password')
-                    hash = generate_password_hash(user_password, method='pbkdf2:sha256', salt_length=16)
+                    hash = generate_password_hash(user_password, 
+                    method='pbkdf2:sha256', salt_length=16)
             
                 user_street = request.form.get('user-street')            
                 user_house_number = request.form.get('user-house-number')
@@ -221,42 +232,68 @@ def order():
 
                 user_ = Users.query.filter_by(id=session.get("user_id")).first()
                 user_id = user_.id
-                user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_id=postage_id, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, user_id=user_id, payment_id=payment_id)
+                user_order = Orders(transaction_total=transaction_total, 
+                cart_value=cart_value, postage_id=postage_id, 
+                first_name=user_name, lastname=user_lastname, 
+                email=user_email, phone=user_phone, address=postage_address, 
+                post_code=user_postcode, city=user_city, country=user_country, 
+                invoice=invoice, created=today, user_id=user_id, 
+                payment_id=payment_id)
             
             # User wants register when making an order
             elif hash:
                 if company_name:
-                    user = Users(first_name=user_name, last_name=user_lastname, company=company_name, nip=nip, email_address=user_email, hash=hash, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country)
+                    user = Users(first_name=user_name, last_name=user_lastname,
+                    company=company_name, nip=nip, email_address=user_email, 
+                    hash=hash, phone=user_phone, address=postage_address, 
+                    post_code=user_postcode, city=user_city, country=user_country)
                 else:
-                    user = Users(first_name=user_name, last_name=user_lastname, email_address=user_email, hash=hash, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country)
+                    user = Users(first_name=user_name, last_name=user_lastname, 
+                    email_address=user_email, hash=hash, phone=user_phone, 
+                    address=postage_address, post_code=user_postcode, 
+                    city=user_city, country=user_country)
                 
                 db.session.add(user)
                 db.session.commit() 
                 
                 user_ = Users.query.filter_by(hash=hash).first()
                 user_id = user_.id
-                user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_id=postage_id, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, user_id=user_id, payment_id=payment_id)
+                user_order = Orders(transaction_total=transaction_total, 
+                cart_value=cart_value, postage_id=postage_id, 
+                first_name=user_name, lastname=user_lastname, email=user_email, 
+                phone=user_phone, address=postage_address, post_code=user_postcode, 
+                city=user_city, country=user_country, invoice=invoice, 
+                created=today, user_id=user_id, payment_id=payment_id)
             
             # User doesn't want to register
             else:
-                user_order = Orders(transaction_total=transaction_total, cart_value=cart_value, postage_id=postage_id, first_name=user_name, lastname=user_lastname, email=user_email, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country, invoice=invoice, created=today, payment_id=payment_id)
+                user_order = Orders(transaction_total=transaction_total, 
+                cart_value=cart_value, postage_id=postage_id, first_name=user_name, 
+                lastname=user_lastname, email=user_email, phone=user_phone, 
+                address=postage_address, post_code=user_postcode, city=user_city, 
+                country=user_country, invoice=invoice, created=today, 
+                payment_id=payment_id)
             
             db.session.add(user_order)
             db.session.commit()
 
             # Query db Orders table for order_id of the current order
-            order_ = Orders.query.filter_by(transaction_total=transaction_total, email=user_email, created=today).first()
+            order_ = Orders.query.filter_by(transaction_total=transaction_total, 
+            email=user_email, created=today).first()
             order_id = order_.id
 
             if company_name and nip:
                 invoice = 'yes'
-                invoice_ = Invoices(order_id=order_id, company=company_name, nip=nip, address=postage_address, post_code=user_postcode, city=user_city, country=user_country)
+                invoice_ = Invoices(order_id=order_id, company=company_name, 
+                nip=nip, address=postage_address, post_code=user_postcode, 
+                city=user_city, country=user_country)
                 db.session.add(invoice_)
                 db.session.commit() 
             
             # Add row to Realization table in db
             if extra_postage_info:
-                realization = Realization(order_id=order_id, postage_info=extra_postage_info)
+                realization = Realization(order_id=order_id, 
+                postage_info=extra_postage_info)
             
             else:
                 realization = Realization(order_id=order_id)
@@ -267,7 +304,10 @@ def order():
             # Add row with details to Cart table in db 
             for content_id, product_ids in cart_dictionary.items(): 
         
-                order_product = Cart(product_id=product_ids[0], content_id=content_id, content_color_id=product_ids[1], case_color_id=product_ids[2], price=product_ids[3], order_id=order_id)
+                order_product = Cart(product_id=product_ids[0], 
+                content_id=content_id, content_color_id=product_ids[1], 
+                case_color_id=product_ids[2], price=product_ids[3], 
+                order_id=order_id)
                 db.session.add(order_product)
                 db.session.commit()
 
@@ -329,13 +369,12 @@ def order():
                 # session_ variable is requirded by the order.html template
                 session_ = "in_session"
                 
-                return render_template("order.html", user_name=user_name, user_lastname=user_lastname, user_email=user_email, user_phone=user_phone, postage_address=postage_address, user_postcode=user_postcode, user_city=user_city, user_country=user_country, company_name=company_name, nip=nip, session_=session_)
+                return render_template("order.html", user_name=user_name, 
+                user_lastname=user_lastname, user_email=user_email, 
+                user_phone=user_phone, postage_address=postage_address, 
+                user_postcode=user_postcode, user_city=user_city, 
+                user_country=user_country, company_name=company_name, nip=nip, 
+                session_=session_)
      
         flash("Dziękujemy za zamówienie!")    
         return redirect("/")
-   
-
-   
-   # user_id not added
-   # does not reload on submit
- 

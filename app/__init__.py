@@ -44,6 +44,7 @@ from app.views_password import password
 from app.views_product import product
 from app.views_login import login
 from app.views_register import register
+from app.views_trodat import trodat
 from app import models
 
 

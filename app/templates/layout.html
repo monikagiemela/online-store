@@ -38,14 +38,30 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">      
                     <ul class="navbar-nav me-auto mt-2">
-                        <li class="nav-item dropdown ms-5">
-                            <a class="nav-link active dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="/pieczątki" role="button">Produkty</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="/pieczątki" role="button">Samotuszujące</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="/trodat">Pieczątki Trodat</a></li>
                                 <li><a class="dropdown-item" href="/wagraf">Pieczątki Wagraf</a></li>
                                 <li><a class="dropdown-item" href="/colop">Pieczątki Colop</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/pieczątki">Wszystkie pieczątki</a></li>
+                                <li><a class="dropdown-item" href="/pieczątki">Wszystkie samotuszujące</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/trodat">Kieszonkowe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/trodat">Kołeczki</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="/pieczątki" role="button">Szkieletowe</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/trodat">Pieczątki Trodat</a></li>
+                                <li><a class="dropdown-item" href="/wagraf">Pieczątki Wagraf</a></li>
+                                <li><a class="dropdown-item" href="/colop">Pieczątki Colop</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/pieczątki">Wszystkie szkieletowe</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -65,7 +81,9 @@
                                 <span><ion-icon name="cart-outline"></ion-icon></span>
                             </a>            
                         </li> 
-                        <li class="nav-link active"><a href="/logout">Wyloguj</a></li>         
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/logout">Wyloguj</a>
+                        </li>         
                     </ul>
                     {% else %}
                     <ul class="navbar-nav ms-auto mt-2">
@@ -84,6 +102,7 @@
                 </div>
             </div>
         </nav>
+        
         <!--- CART MODAL STARTS HERE -->
         <div class="modal fade" id="cart_modal" tabindex="-1" aria-labelledby="cart_modal_lable" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
@@ -94,17 +113,23 @@
                     </div>
 
                     <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-4 ms-auto"><strong>Produkt</strong></div>
-                                <div class="col-md-2 ms-auto"><strong>Kolor obudowy</strong></div>
-                                <div class="col-md-2 ms-auto"><strong>Kolor tuszu</strong></div>
-                                <div class="col-md-2 ms-auto"><strong>Cena produktu</strong></div>
-                            </div>
+                        <div class="table-responsive">
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-auto">Produkt</th>
+                                        <th class="col-md-auto">Kolor obudowy</th>
+                                        <th class="col-md-auto">Kolor tuszu</th>
+                                        <th class="col-md-auto">Cena produktu</th>
+                                        <th class="col-md-auto"></th>
+                                    </tr>
+                                </thead>
+                                           
+                                <tbody class="container-fluid" id="cart-products"></tbody>
+                            
+                            </table>
                         </div>
-                        <br>
-                        <div class="container-fluid" id="cart-products"></div>
-                        <hr>
+                
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-4"><strong>Razem produkty</strong></div>
@@ -138,8 +163,8 @@
         <footer class="small">
             <div class="container-fluid">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><a href="/o_nas">O nas</a></li>
-                    <li class="list-group-item"><a href="#">Skontaktuj się z nami</a></li>
+                    <li class="list-group-item"><a class="oncolor" href="/o_nas">O nas</a></li>
+                    <li class="list-group-item"><a class="oncolor" href="#">Skontaktuj się z nami</a></li>
                 </ul>
             </div>
         </footer>

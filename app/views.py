@@ -31,24 +31,15 @@ def index():
 
     return render_template("index.html")
 
-
 @app.route("/all", methods=["GET"])
 def all():
     """Show all products"""
     return render_template("all.html")
 
-
 @app.route("/colop", methods=["GET"])
 def colop():
     """Show all Colop products"""
     return render_template("colop.html")
-
-
-@app.route("/trodat", methods=["GET"])
-def trodat():
-    """Show all Trodat products"""
-    return render_template("trodat.html")
-
 
 @app.route("/wagraf", methods=["GET"])
 def wagraf():
@@ -66,7 +57,6 @@ def logout():
     flash('Zostałeś wylogowany')
     return redirect("/")
 
-
 @app.route("/user", methods=["GET"])
 @login_required
 def user():
@@ -80,14 +70,3 @@ def user():
         #SQL for user_transactions
              
         return render_template("user.html")
-
-
-
-    
-
-
-
-
-
-
-

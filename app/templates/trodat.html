@@ -1,16 +1,27 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Popularne Pieczątki
+    Trodat
 {% endblock %}
 
 {% block main %}
-        <div class="container">
-            <div class="section">
-                <h2>Pieczątki Trodat</h2>
-                <hr>
-                <img alt="trodat4912" src="photos/trodat4912.jpg">
-                <img alt="trodat9511" src="photos/trodat9511.jpg">
-            </div>
+<div class="container text-center">
+    <h2>Pieczątki Trodat</h2>
+</div>
+
+<section class="boxes">
+    <div class="container">
+        {% for product in products %}
+        <div class="box">  
+            <img alt="{{ product.product_name }}" src="static/trodat/{{ product.symbol }}/{{ product.symbol }}_red.jpeg">
+            <h3 class="box-title">{{ product.product_name }}</h3>
+            <p class="box-content">Cena: {{ product.price | PLN }}</p>
+            <form action="/product" method="get">
+                <input type="hidden" id="{{ product.id }}" name="id" value="{{ product.id }}">
+                <input type="submit" class="box-btn" value="Obejrzyj produkt">
+            </form>
         </div>
+        {% endfor%}
+    </div>
+</section>
 {% endblock %}

@@ -121,4 +121,3 @@ class Invoices(db.Model):
 class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     payment_type = db.Column(db.Text, nullable=False)
-

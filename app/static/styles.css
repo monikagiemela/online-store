@@ -5,10 +5,14 @@
 }
 a {
     text-decoration: none;
-    color: #fff;
+    color: #020202;
 }
 a:link {
-    color: #fff;
+    color: #020202;
+}
+footer .oncolor{
+    color: #ffffff;
+
 }
 a:hover {
     color: #bfa2f3;
@@ -30,7 +34,7 @@ a:active {
 }
 .box-btn:hover {
     background-color:#bfa2f3;
-    color: white;
+    color: #ffffff;
 }
 .btn-large {
     width: 96%;
@@ -120,7 +124,7 @@ nav ion-icon {
     cursor: pointer;   
 }
 nav .nav-link {
-    font-size: 24px;
+    font-size: 16px;
     color: #fff;
 }
 nav .navbar-brand img {
@@ -137,10 +141,13 @@ nav .container {
     height: 520px;
 }
 
-/* -------- CART PAGE ---------------*/
-p ion-icon {
-    font-size: 25px;  
+/* -------- CART MODAL ---------------*/
+.remove-product {
+    background-color: transparent;
+    border: none;
     cursor: pointer;
+    font-size: 20px;  
+    
 }
 .img-cart {
     height: 100px;
@@ -251,6 +258,7 @@ footer .conteiner {
 }
 
 
+/** ------------ DIAGONAL BUTTON ------------- **/
 .diagonal {
     position: relative;
     line-height: 50px;

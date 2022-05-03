@@ -98,7 +98,8 @@ class Cart(db.Model):
     content_color_id = db.Column(db.Integer, db.ForeignKey('contentcolors.id'), nullable=False)
     case_color_id = db.Column(db.Integer, db.ForeignKey('casecolors.id'), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False) 
+
 
 class Realization(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), primary_key=True, nullable=False)

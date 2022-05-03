@@ -141,7 +141,7 @@ def order():
 
                 # Fetch content_id from Content table in db
                 content_id = content_lines.id
-
+           
                 # List that will store product ids
                 product = []
         
@@ -169,8 +169,7 @@ def order():
 
 
             # User is logged in
-            if session.get("user_id"):
-                
+            if session.get("user_id"):     
                 user_id = session.get("user_id")
             
                 # Fetch user data from Users table in db
@@ -191,8 +190,7 @@ def order():
                     nip = "----"
             
             # User is not registered - get user dails from the order form
-            else:
-                
+            else:     
                 user_title = request.form.get('user-title')    
                 user_name = request.form.get('user-name')
                 user_lastname = request.form.get('user-lastname')
@@ -229,7 +227,6 @@ def order():
                 
             # User is logged in
             if session.get("user_id") :
-
                 user_ = Users.query.filter_by(id=session.get("user_id")).first()
                 user_id = user_.id
                 user_order = Orders(transaction_total=transaction_total, 
@@ -294,7 +291,6 @@ def order():
             if extra_postage_info:
                 realization = Realization(order_id=order_id, 
                 postage_info=extra_postage_info)
-            
             else:
                 realization = Realization(order_id=order_id)
             
@@ -303,7 +299,6 @@ def order():
 
             # Add row with details to Cart table in db 
             for content_id, product_ids in cart_dictionary.items(): 
-        
                 order_product = Cart(product_id=product_ids[0], 
                 content_id=content_id, content_color_id=product_ids[1], 
                 case_color_id=product_ids[2], price=product_ids[3], 
@@ -312,38 +307,29 @@ def order():
                 db.session.commit()
 
         # User used a login form in this template's modal to log in  
-        elif request.form.get('login-password'):
-                    
+        elif request.form.get('login-password'):             
                 # Ensure email_address was submitted
                 try:
-                    email_address = request.form.get('login-email-address')
-                
+                    email_address = request.form.get('login-email-address')            
                 except AttributeError:
-    
                     return apology("Podaj address email, który podałeś przy rejestracji", 400)
                 
                 # Ensure password was submitted
                 try:
-                    password = request.form.get('login-password')
-                
+                    password = request.form.get('login-password')         
                 except AttributeError:
-
                     return apology("Podaj hasło", 400)
                 
                 # Query database for email_address and check password  
                 user = None
                 try:
-                    user = Users.query.filter_by(email_address=email_address).first()
-                
+                    user = Users.query.filter_by(email_address=email_address).first() 
                 except AttributeError:
-
                     return apology("Nieprawidłowy adres email lub hasło", 400)
                   
                 try: 
                     check_password_hash(user.hash, password)
-                
-                except AttributeError:
-                    
+                except AttributeError:        
                     return apology("Nieprawidłowy adres email lub hasło", 400)
             
                 # Remember which user has logged in

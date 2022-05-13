@@ -10,6 +10,7 @@ from app.helpers import apology, login_required, absolute, PLN
 
 
 from flask import flash, redirect, render_template, request, session, jsonify, url_for
+#from flask_mail import Message
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -56,6 +57,10 @@ def register():
         db.session.add(user)
         db.session.commit()
         
+        # Send email
+        #message = Message("Dziękujemy za rejestrację", recipients=[user_email])
+        #mail.send(message)
+
         flash('Dziękujemy za rejestrację')
         return redirect("/login")
 

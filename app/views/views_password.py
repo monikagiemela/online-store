@@ -8,8 +8,8 @@ from app import app, db
 from app.models import Brands, Cart, Categories, Casecolors, Content, Contentcolors, Invoices,  Orders, OrderProducts, Products,  Postage, Realization, Users, Payment
 from app.helpers import apology, login_required, absolute, PLN
 
-
 from flask import flash, redirect, render_template, request, session, jsonify, url_for
+#from flask_mail import Message
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -25,6 +25,13 @@ def password():
         return render_template("password.html")
     # If user entered a new password the following checks if user entered a valid format of a password
     elif request.method == "POST":
+
+        # Fetch user data from db
+        if session.get("user_id"):
+            user_id = session.get("user_id")
+            # Fetch user data from db
+            user = Users.query.filter_by(id=user_id).first()
+            user_email = user.email_address
         new_password = request.form.get("new_password")
         confirmation = request.form.get("confirmation")
 
@@ -45,6 +52,9 @@ def password():
         #db.execute("UPDATE users SET hash = ? WHERE id = ?", generate_password_hash(
             #new_password, method='pbkdf2:sha256', salt_length=8), id)
 
+        # Send email
+        #message = Message("Twoje hasło zostało zmienione", recipients=[user_email])
+        #mail.send(message)
         flash("Twoje hasło zostało zmienione")
         
         return redirect("/user")

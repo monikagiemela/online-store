@@ -35,5 +35,6 @@ uploads/**
 
 store.sqbpro
 store.db
+store.db-journal
 
 flask_session/**

@@ -6,12 +6,12 @@ import os
 import re
 from wsgiref.handlers import format_date_time
 
-
 from app import app, db
 from app.models import Brands, Cart, Categories, Casecolors, Content, Contentcolors, Invoices,  Orders, OrderProducts, Products,  Postage, Realization, Users, Payment
 from app.helpers import apology, login_required, absolute, PLN
 
 from flask import flash, redirect, render_template, request, session, jsonify, url_for, make_response
+#from flask_mail import Message
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -361,6 +361,20 @@ def order():
                 user_postcode=user_postcode, user_city=user_city, 
                 user_country=user_country, company_name=company_name, nip=nip, 
                 session_=session_)
-     
+
+        # Send email to the customer
+        #message = Message("Dziękujemy za zamoówienie!", recipients=[user_email])
+        #message.html = "<b>testing</b>"
+        #mail.send(message)
+        # Send email to the store administrator
+        #message = Message("Masz nowe zamówienie!", recipients=["giemela@yahoo.com"])
+        #message.html = render_template("order_mail.html", user_name=user_name, 
+        #        user_lastname=user_lastname, user_phone=user_phone, 
+        #        postage_address=postage_address, 
+        #        user_postcode=user_postcode, user_city=user_city, 
+        #        user_country=user_country, company_name=company_name, nip=nip, 
+        #        order_id=order_id, extra_postage_info=extra_postage_info)
+        #mail.send(message)
+
         flash("Dziękujemy za zamówienie!")    
         return redirect("/")

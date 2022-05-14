@@ -1,5 +1,7 @@
 # <img src="app/static/stampicon.png" alt="stamp_icon" width="35"/> **MG Print | online store**
 
+## Video demo: https://youtu.be/s67WPO_GYU4
+
 An online store with Flask server-side, Flask-SQLAlchemy ORM for Sqlite database, and Javascript front-end combining Bootstrap framework and personalised CSS.  
 
 Functionalities include:

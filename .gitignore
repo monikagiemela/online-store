@@ -1,4 +1,3 @@
-   
 .DS_Store
 .env
 .flaskenv
@@ -29,7 +28,6 @@ htmlcov/
 sql.txt
 
 uploads/**
-*.png
 *.jpg
 *jpeg
 

@@ -1,19 +1,7 @@
-from curses.ascii import NUL
-from datetime import datetime
-import os
-import re
-
-
-from app import app, db
-from app.models import Brands, Cart, Categories, Casecolors, Content, Contentcolors, Invoices,  Orders, OrderProducts, Products,  Postage, Realization, Users, Payment
-from app.helpers import apology, login_required, absolute, PLN
-
-
-from flask import flash, redirect, render_template, request, session, jsonify, url_for
-from tempfile import mkdtemp
+from app import app
+from app.helpers import login_required
+from flask import flash, redirect, render_template, session
 from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import secure_filename
-import json
 
 
 @app.after_request
@@ -52,7 +40,6 @@ def logout():
 
     # Forget any user_id
     session.clear()
-
     # Redirect user to login form
     flash('Zostałeś wylogowany')
     return redirect("/")
@@ -68,5 +55,5 @@ def user():
         id = session.get("user_id")
 
         #SQL for user_transactions
-             
+
         return render_template("user.html")

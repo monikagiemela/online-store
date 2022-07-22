@@ -1,12 +1,5 @@
-import requests
-import urllib.parse
-
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, session
 from functools import wraps
-from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import secure_filename
-
-
 
 
 def absolute(quantity):
@@ -24,11 +17,10 @@ def apology(message, code=400):
         https://github.com/jacebrowning/memegen#special-characters
         """
         for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+                        ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
             s = s.replace(old, new)
         return s
     return render_template("apology.html", top=code, bottom=escape(message)), code
-
 
 def login_required(f):
     """
@@ -42,7 +34,6 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
-
 
 def PLN(value):
     """Format value as zł."""
@@ -79,4 +70,3 @@ def PLN(value):
     # Add user details to Users table in db    
     user = Users(first_name=user_name, last_name=user_lastname, company=company_name, nip=nip, email_address=user_email, hash=hash, phone=user_phone, address=postage_address, post_code=user_postcode, city=user_city, country=user_country)
     return user"""
-  

@@ -1,20 +1,8 @@
-from curses.ascii import NUL
-from datetime import datetime
-import os
-import re
-
-
 from app import app, db
-from app.models import Brands, Cart, Categories, Casecolors, Content, Contentcolors, Invoices,  Orders, OrderProducts, Products,  Postage, Realization, Users, Payment
-from app.helpers import apology, login_required, absolute, PLN
-
-
-from flask import flash, redirect, render_template, request, session, jsonify, url_for
+from app.models import Users
+from flask import flash, redirect, render_template, request
 #from flask_mail import Message
-from tempfile import mkdtemp
-from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import secure_filename
-import json
+from werkzeug.security import generate_password_hash
 
 
 @app.route("/register", methods=["GET", "POST"])

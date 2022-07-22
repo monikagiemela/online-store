@@ -1,9 +1,23 @@
-<div class="container">
-    <p>{{ user_name }} {{ user_lastname }},</p>
+<div style="font: size 25px;">
+    <p>Witaj {{ user_name }} {{ user_lastname }},</p>
     <p>Dziękujemy za zamówienie w naszym sklepie.</p>
-    <p>Nr zamówienia {{ order_id }}</p>
-    <p>Kwota zamówienia z VAT: {{ transaction_total }}</p>
-    <p>Zamówienie zostanie wysłane na adres: {{ postage_address}}, {{ user_postcode}} {{ user_city}} {{ user_country}}</p>
+    <br>
+    <p><strong>Szczegóły zamówienia</strong></p>
+    <p>Nr zamówienia: {{ order_id }}</p>
+    <p>Kwota zamówienia z VAT: {{ cart_value }}</p>
+    <p>Przesyłka z VAT: {{ postage_price }}</p>
+    <p>Kwota do zapłaty z VAT: {{ transaction_total }}</p>
+    <p>Adres do wysyłki: {{ postage_address}}, {{ user_postcode}} {{ user_city}} {{ user_country}}</p>
     <p>Nr telefon do kontaktu: {{ user_phone }}</p>
-    <p>Informacje dla kuriera: {{ extra_postage_info }}</p>
+    {% if extra_postage_info != 'no' %}
+        <p>Informacje dla kuriera: {{ extra_postage_info }}</p>
+    {% endif %}
+    {% if invoice != 'no' %}
+        <p>Faktura: tak</p>
+        <p>Nazwa firmy: {{ company_name }}</p>
+        <p>NIP: {{ nip }}</p>
+    {% endif %}
+    <br>
+    <p>Pozdrawiamy,</p>
+    <p>MG Print</p>
 </div>

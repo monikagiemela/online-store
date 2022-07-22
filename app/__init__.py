@@ -1,15 +1,10 @@
 import os
-from os.path import join, dirname, realpath
-from dotenv import load_dotenv 
-
 from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-#from flask_mail import Mail
-
+from flask_mail import Mail
 from app.helpers import absolute, PLN
 
-load_dotenv()
 
 # Configure application
 app = Flask(__name__)
@@ -32,13 +27,13 @@ app.config['ALLOWED_EXTENSIONS'] = ['txt', 'pdf', 'png', 'jpg', 'jpeg', '.doc', 
 # Configure email services
 # Requires that "Less secure app access" be on
 # https://support.google.com/accounts/answer/6010255
-app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_DEFAULT_SENDER"]
-app.config["MAIL_PASSWORD"] = os.environ["MAIL_PASSWORD"]
+app.config["MAIL_DEFAULT_SENDER"] = os.environ["SENDER_EMAIL"]
+app.config["MAIL_PASSWORD"] = os.environ["MAIL_PWD"]
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
-#mail = Mail(app)
+app.config["MAIL_USERNAME"] = os.environ["SENDER_EMAIL"]
+mail = Mail(app)
 
 # Custom filters
 app.jinja_env.filters["PLN"] = PLN
@@ -50,6 +45,7 @@ app.jinja_env.lstrip_blocks = True
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///store.db'
 db = SQLAlchemy(app)
 
+from app.models import *
 from app.views.views import after_request, index, all, colop, wagraf, logout, user
 from app.views.views_order import order
 from app.views.views_password import password
@@ -57,7 +53,8 @@ from app.views.views_product import product
 from app.views.views_login import login
 from app.views.views_register import register
 from app.views.views_category_all import trodat
-from app import models
+
+
 
 """
 # using SendGrid's Python Library

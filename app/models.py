@@ -15,7 +15,6 @@ class Users(db.Model):
     city = db.Column(db.Text, nullable=False)
     country = db.Column(db.Text, nullable=False)
 
-   
 class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     transaction_total = db.Column(db.Float, nullable=False)
@@ -41,7 +40,7 @@ class OrderProducts(db.Model):
     case_color_id = db.Column(db.Integer, db.ForeignKey('casecolors.id'), nullable=False)
     content_id = db.Column(db.Integer, db.ForeignKey('content.id'), nullable=False)
     content_color_id = db.Column(db.Integer, db.ForeignKey('contentcolors.id'), nullable=False)
-   
+
 class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     product_name = db.Column(db.Text, nullable=False, unique=True)
@@ -54,7 +53,7 @@ class Products(db.Model):
     symbol = db.Column(db.Text)
     price = db.Column(db.Float)
     brand_cat = db.Column(db.Text)
-  
+
 class Brands(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     brand_name = db.Column(db.Text, nullable=False, unique=True)
@@ -99,7 +98,6 @@ class Cart(db.Model):
     case_color_id = db.Column(db.Integer, db.ForeignKey('casecolors.id'), nullable=False)
     price = db.Column(db.Float, nullable=False)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False) 
-
 
 class Realization(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), primary_key=True, nullable=False)

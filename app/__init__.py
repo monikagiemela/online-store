@@ -3,6 +3,8 @@ from flask import Flask
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
+from flask_migrate import Migrate
+
 from app.helpers import absolute, PLN
 
 
@@ -44,6 +46,7 @@ app.jinja_env.lstrip_blocks = True
 # Configure database
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///store.db'
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 from app.models import *
 from app.views.views import after_request, index, all, colop, wagraf, logout, user

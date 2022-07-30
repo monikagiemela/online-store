@@ -62,7 +62,7 @@ button:visited {
 }
 #odd-container {
     background-color: #f3f3f3;
-  
+
     width: 100%;
 }
 img {
@@ -97,7 +97,7 @@ ul.no-bullets {
     align-items: flex-start;
     flex-wrap: wrap;
     justify-content: center;
-  }
+}
 .box-product-page {
     text-align: justify;
     padding: 20px;
@@ -110,7 +110,6 @@ ul.no-bullets {
     width: 100%;
     height: auto;
 }
-
 
 /**--------- NAVBAR -----------**/
 nav {
@@ -186,7 +185,6 @@ nav .container {
     color: #020202;
 }
 
-
 /** -------- ORDER PAGE ------------- **/
 .order-boxes {
     background-color: #ffffff;  
@@ -201,7 +199,7 @@ nav .container {
     align-items: flex-start;
     flex-wrap: wrap;
     justify-content: center;
-  }
+}
 .box-order-page {
     text-align: justify;
     padding: 5px;
@@ -244,7 +242,7 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-  }
+}
 footer .conteiner {
     height: 125px;
     display: flex;
@@ -256,7 +254,6 @@ footer .conteiner {
     color: #fff;
     text-decoration: none;
 }
-
 
 /** ------------ DIAGONAL BUTTON ------------- **/
 .diagonal {
@@ -282,4 +279,3 @@ footer .conteiner {
     background-position: left top;
     color: #000;
 }
-    

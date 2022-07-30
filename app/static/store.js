@@ -50,7 +50,7 @@ if (document.location.pathname == "/product") {
     // Listen for when the user clicks the add-to-cart button and save details to localStorage  
     let addToCartBtn = document.getElementById("add-to-cart");
     addToCartBtn.addEventListener("click", () => {
-       
+
         // Initiate a dict for product details  
         var productDetailsDict = {};
         
@@ -218,7 +218,7 @@ if (document.location.pathname == "/order") {
         // Fill every cart-value element in template with the value of the cartTotalValue variable
         document.querySelector("#cart-value-cart-table").innerHTML = "<b>" + cartTotalValue.toFixed(2) + " zł</b>";
         document.querySelector("#cart-value-summary-table").innerHTML = cartTotalValue.toFixed(2) + " zł";
- 
+
         // Fill every cartValueNetDiv in template with net value of the cartTotalValue variable
         var cartValueNetDivs = document.querySelectorAll(".cart-value-net");
         for (var i = 0; i < cartValueNetDivs.length; i++) {
